@@ -1,0 +1,12 @@
+What is the time complexity of following code:
+ 
+int a = 0, i = N; 
+while (i > 0) { 
+    a += i; 
+    i /= 2; 
+}
+
+TC: logn
+
+Derivation : N+N/2+N/4+...1 ====> N/2^k=1 =====> 2^k=N ====> k=log2(n)
+Therefore after k iterations N==0 and k=log2(n).
