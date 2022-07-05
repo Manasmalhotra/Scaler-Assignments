@@ -1,0 +1,16 @@
+Problem Description
+For a given number A, print its multiplication table having the first 10 multiples.
+
+#include<iostream>
+
+using namespace std;
+
+int main()  {
+int i,n;
+cin>>n;
+for(i=1;i<=10;i++){
+    string res=to_string(n)+" * "+to_string(i)+" = ";
+    cout<<res<<i*n<<endl;
+}
+
+}
