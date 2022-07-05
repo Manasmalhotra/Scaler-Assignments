@@ -1,0 +1,45 @@
+// Simple factor finding as in prime numbers. TC:O(sqrt(n)).
+public class Solution {
+    public int solve(int A) {
+        int i;
+        for(i=1;i*i<=A;i++){
+            if(A%i==0){
+                if(A/i==i){
+                    return i;
+                }
+            }
+        }
+        return -1;
+    }
+}
+
+//Approach 2 (With Binary Search we can do this in log n and we know that logn<sqrt(n) by graph so this is a better approach.)
+
+public class Solution {
+    public int solve(int A) {
+        int i,mid,left=1,right=A;
+
+        while(left<=right){
+
+            mid=left+(right-left)/2;
+            long prod=(long)mid*mid;
+            if(prod==A){
+
+                return mid;
+
+            }
+
+            else if(prod>A){
+
+                right=mid-1;
+            }
+
+            else{
+                left=mid+1;
+
+            }
+
+        }
+        return -1;       
+    }
+}
