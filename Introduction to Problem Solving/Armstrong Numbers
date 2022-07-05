@@ -1,0 +1,56 @@
+Problem Description
+
+You are given an integer N you need to print all the Armstrong Numbers between 1 to N.
+
+If sum of cubes of each digit of the number is equal to the number itself, then the number is called an Armstrong number.
+
+For example, 153 = ( 1 * 1 * 1 ) + ( 5 * 5 * 5 ) + ( 3 * 3 * 3 ).
+
+
+//JAVA
+
+public class Main {
+    public static void main(String[] args) {
+     
+     Scanner sc=new Scanner(System.in);
+     int a=sc.nextInt();
+     while(a>0){
+     long sum=0,n=sc.nextInt();
+     while(n>0){
+         long rem=n%10;
+         sum+=(long)rem*rem*rem;
+         n=n/10;
+     }
+      if(sum==n){
+          System.out.println("YES");
+      }  
+      else{
+         System.out.println("NO"); 
+      }
+      a=a-1;
+     }
+    }
+}
+
+//C++
+
+#include<iostream>
+
+using namespace std;
+
+int main()  {
+   int n,t=1;
+   cin>>n;
+   while(t<=n){
+       int temp=t,sum=0,rem;
+       while(temp){
+           rem=temp%10;
+           sum+=rem*rem*rem;
+           temp=temp/10;
+       }
+       if(sum==t){
+           cout<<t<<endl;
+       }
+       t+=1;
+   }
+}
