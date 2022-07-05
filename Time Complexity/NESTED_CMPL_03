@@ -1,0 +1,25 @@
+int count=0;
+for(i=N;i>0;i/=2){
+ for(j=0;j<i;j++){
+   count+=1;
+  }
+ }
+ 
+ Time Complexity Derivation
+ 
+ i      j
+ N      0 to N-1 ==>N iterations 
+ N/2     N/2 iterations
+ N/4     N/4 iterations
+ ..
+ 1
+ 
+ I will run like :N,N/2,N/4 ...1 Therefore we will have log2(N) terms for j 
+ Now j goes like N+N/2+N/4+...
+ This is sum of a GP with common difference 1/2 with number of terms=log2(N)
+ N*(1-(1/2)^log2N)
+ --------------- = 2*N*(N-1)= 2*(N-1)
+    1-1/2          ---------
+                       N
+
+ Therefore Complexity is O(N).
