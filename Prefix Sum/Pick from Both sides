@@ -1,0 +1,55 @@
+You are given an integer array A of size N.
+
+You have to pick B elements in total. Some (possibly 0) elements from left end of array A and some (possibly 0) from the right end of array A to get the maximum sum.
+
+Find and return this maximum possible sum.
+
+1 <= N <= 105
+
+1 <= B <= N
+
+-103 <= A[i] <= 103
+
+
+ A = [5, -2, 3 , 1, 2]
+ B = 3
+ 
+ Generate cases as :
+ 5 -2 3     []      sum=6    0 to 2
+ 5 -2       2       sum=5    0 to 1      4
+ 5          1,2     sum=8    0 to 0      3,4
+ []         3 1 2   sum=6                2 to 4
+ 
+ public class Solution {
+    public int getsum(int[] prefix,int l,int r){
+        if(r<l){
+            return 0;
+        }
+        else{
+            return prefix[r]-prefix[l-1];
+        }
+    }
+    public int solve(int[] A, int k) {
+      
+        int i,n=A.length,sum=0,maxx=Integer.MIN_VALUE;
+        int [] prefix=new int[n];
+        prefix[0]=A[0];
+        for(i=1;i<n;i++){
+            prefix[i]=prefix[i-1]+A[i];
+        }
+        if(k==n){
+            return prefix[n-1];
+        }
+        for(i=0;i<=k;i++){
+            sum=0;
+            if(k-1-i>=0){
+            sum+=prefix[k-1-i];
+            }
+            sum+=getsum(prefix,n-i,n-1);
+            if(maxx<sum){
+                maxx=sum;
+            }
+        }
+        return maxx;
+    }
+}
