@@ -1,0 +1,52 @@
+Problem Description
+Given an array, arr[] of size N, the task is to find the count of array indices such that removing an element from these indices makes the sum of even-indexed and odd-indexed array elements equal.
+
+
+
+Problem Constraints
+1 <= n <= 105
+-105 <= A[i] <= 105
+
+[2 1 6 4] ==> Remove index 0  [1,6,4] so 5!=6.
+              Remove index 1 [2,6,4] so 6==6 Therefore count++.
+              Remove index 2 [2 1 4] so 6!=1. 
+              Remove index 3 [2,1,6] so 8!=1.
+              
+ Ans=1;
+ 
+ When we delete an index i all indices to the left remain same, but the position of those ahead that is from i+1 changes. Odd becomes even and even becomes odd.
+ 
+ public class Solution {
+    public int solve(int[] A) {
+    int i,n=A.length;
+    int [] even=new int[n];
+    int [] odd=new int [n];
+    even[0]=A[0];
+    odd[0]=0;
+    for(i=1;i<n;i++){
+        if(i%2==0){
+            even[i]=even[i-1]+A[i];
+            odd[i]=odd[i-1];
+        }
+        else{
+            even[i]=even[i-1];
+            odd[i]=odd[i-1]+A[i];
+        }
+    }
+    int sumeven,sumodd,count=0;
+    for(i=0;i<n;i++){
+        if(i==0){
+            sumeven=odd[n-1]-odd[0];
+            sumodd=even[n-1]-even[0];
+        }    
+        else{
+            sumeven=even[i-1]+odd[n-1]-odd[i];
+            sumodd=odd[i-1]+even[n-1]-even[i];
+        }
+        if(sumeven==sumodd){
+            count+=1;
+        }
+    }
+    return count;
+    }
+}
