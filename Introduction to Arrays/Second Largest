@@ -1,0 +1,37 @@
+You are given an integer array A. You have to find the second largest element/value in the array or report that no such element exists.
+In 5,5,5,2 => Second Largest element is 5 only because when sorted ===> 5 5 5 2 ==> A[1]=5. So duplication of value does not matter we 
+have to get number on second position.
+
+Tc: O(NlogN)
+
+int Solution::solve(vector<int> &A) {
+    if(A.size()==1){
+        return -1;
+    }
+   sort(A.begin(),A.end(),greater<int>());
+   return A[1]; 
+}
+
+TC: O(N)
+
+int Solution::solve(vector<int> &A){
+    if(A.size()==1){
+        return -1;
+    }
+    int i,maxx=arr[0],index=0;
+    for(i=1;i<n;i++){
+      if(maxx<arr[i]){
+        maxx=arr[i];
+        index=i;
+      }
+     }
+     
+     int ans=-1;
+     for(i=0;i<n;i++){
+        if(index!=i){
+           ans=max(ans,maxx);
+        }
+      }
+      
+      return ans;
+   }
