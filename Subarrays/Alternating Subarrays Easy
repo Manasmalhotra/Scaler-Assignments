@@ -1,0 +1,30 @@
+vector<int> Solution::solve(vector<int> &A, int B) {
+    vector<int>result;
+    int required=(2*B)+1;
+    int i,n=A.size(),left,right,len,flag;
+
+    for(i=0;i<n;i++){
+        left=i;
+        right=i;
+        if(A[i]==0){
+            flag=0;
+        }
+        else{
+            flag=1;
+        }
+        while(left>=0 && right<n){
+            if(flag==A[left] && flag==A[right]){
+                flag=1-flag;
+            }
+            else{
+                break;
+            }
+            if(right-left+1==required){
+                result.push_back(i);
+            }
+            left--;
+            right++;
+        }
+    }
+    return result;
+}
