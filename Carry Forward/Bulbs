@@ -1,0 +1,55 @@
+A wire connects N light bulbs.
+
+Each bulb has a switch associated with it; however, due to faulty wiring, a switch also changes the state of all the bulbs to the right of the current bulb.
+
+Given an initial state of all bulbs, find the minimum number of switches you have to press to turn on all the bulbs.
+
+You can press the same switch multiple times.
+
+Example: A=[0,1,0,1]
+         1 0 1 0
+         1 1 0 1
+         1 1 1 0
+         1 1 1 1
+  The answer = 4. So after 4 switches to original we get to array 1 1 1 1.
+  
+  Brute Force
+  
+  int Solution::bulbs(vector<int> &A){
+     
+     int i,j,count=0,n=A.size();
+     
+     for(i=0;i<n;i++){
+       if(A[i]==0){
+        count+=1;
+        for(j=i+1;j<n;j++){
+           arr[j]=1-arr[j];
+         }
+       }
+      }
+      
+      return count;
+    }
+    
+    //Optimised
+    
+    In the above solution, after turning on a switch we flipped all elements to the right of it.
+    This actual flipping was giving us an extra loop, so I thought of simulating this flip by taking a variable. For example if A=[0 1 0 1] then after turning A[0]=1
+    we get [1 0 1 0] so at right what was 0 has become 1 and what was 1 has become 0, so we can maintain a flag var to now look out for 1s in original array as they would have
+    become 0 on actaully flipping using the switch 0.
+    
+    
+    int Solution::bulbs(vector<int> &A){
+    int i,flag=0,n=A.size();
+    for(i=0;i<n;i++){
+      if(flag==0 && A[i]==0){
+         count+=1;
+         flag=1-flag;
+      }
+      else if(flag==1 && A[i]==1){
+         count+=1;
+         flag=1-flag;
+       }
+    }
+    return count;
+  }
