@@ -1,0 +1,51 @@
+Problem Description
+You are given an integer array A of length N.
+You are also given a 2D integer array B with dimensions M x 2, where each row denotes a [L, R] query.
+For each query, you have to find the sum of all elements from L to R indices in A (1 - indexed).
+More formally, find A[L] + A[L + 1] + A[L + 2] +... + A[R - 1] + A[R] for each query.
+
+
+
+Problem Constraints
+1 <= N, M <= 105
+1 <= A[i] <= 109
+1 <= L <= R <= N
+
+
+Approach: Simple take prefix sum for the array and then answer each query in O(1) time.
+
+
+Input 1:
+A = [1, 2, 3, 4, 5]
+B = [[1, 4], [2, 3]]
+
+Output 1:
+[10, 5]
+
+
+Code:
+
+public class Solution {
+    public long[] rangeSum(int[] A, int[][] B) {
+        int k=0,i,n=A.length,m=B.length;
+        long prefix[]=new long[n];
+        prefix[0]=Long.valueOf(A[0]);
+        for(i=1;i<n;i++){
+          prefix[i]=prefix[i-1]+Long.valueOf(A[i]); // int + long= long  
+        }
+
+        long []result=new long[m];
+
+        for(i=0;i<m;i++){
+            int l=B[i][0]-1;
+            int r=B[i][1]-1;
+            if(l==0){
+                result[k++]=prefix[r];
+            }
+            else{
+                result[k++]=prefix[r]-prefix[l-1];
+            }
+        }
+        return result;
+    }
+}
