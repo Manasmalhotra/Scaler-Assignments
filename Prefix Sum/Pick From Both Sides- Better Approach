@@ -16,3 +16,6 @@ int Solution::solve(vector<int> &A, int B) {
     }
     return ans;
 }
+
+TC: O(B)
+SC:O(1)
