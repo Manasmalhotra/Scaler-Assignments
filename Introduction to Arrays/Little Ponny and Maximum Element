@@ -1,0 +1,50 @@
+Problem Description
+Little Ponny is given an array, A, of N integers. In a particular operation, he can set any element of the array equal to -1.
+
+He wants your help in finding out the minimum number of operations required such that the maximum element of the resulting array is B. If it is not possible, then return -1.
+
+
+
+Problem Constraints
+1 <= |A| <= 105
+
+1 <= A[i] <= 109
+
+// Here basically you need to find number of elements greater than a given Number..
+//Now see the first solution how you saw the problem for the first time..
+
+int Solution::solve(vector<int> &A, int B) {
+  sort(A.begin(),A.end(),greater<int>());
+  int i,n=A.size(),low=0,mid,ans=-1;
+  for(i=0;i<n;i++){
+      if(A[i]==B){
+          return n-1-i;
+      }
+  }
+  return -1;
+}
+TC: O(NlogN) SC:O(1).
+
+XD Xd , thought of deleting all the elements before the first occurrence of the given element in a decreasing sorted array.
+
+Can we do this question in just O(N)?
+Yes
+
+int Solution::solve(vector<int> &A, int B) {
+ int i,n=A.size(),flag=0,count=0;
+
+ for(i=0;i<n;i++){
+     if(A[i]==B){
+         flag=1;
+     }
+     if(A[i]>B){
+         count++;
+     }
+ }
+ if(flag==0){
+     return -1;
+ }
+ return count;
+}
+
+TC: O(N) SC: O(1)
