@@ -1,0 +1,24 @@
+Problem Description
+Given an integer array A of size N. In one second, you can increase the value of one element by 1.
+
+Find the minimum time in seconds to make all elements of the array equal.
+
+
+Problem Constraints
+1 <= N <= 1000000
+1 <= A[i] <= 1000
+
+//Approach: We can only increase the elements of the array, thus the minimum requirement shall be for all elements to be equal to max element. \
+//Thus have subtracted the total sum from n*maxxelement to get how much more is to be added to the sum.
+
+public class Solution {
+    public int solve(int[] arr) {
+        int i=0,sum=0,n=arr.length,maxx=Integer.MIN_VALUE;
+        for(i=0;i<n;i++){
+          sum+=arr[i];
+          maxx=Math.max(arr[i],maxx);
+        }
+        return maxx*n-sum;
+        
+    }
+}
