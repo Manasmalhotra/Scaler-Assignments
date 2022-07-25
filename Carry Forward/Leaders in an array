@@ -1,0 +1,25 @@
+Problem Description
+
+Given an integer array A containing N distinct integers, you have to find all the leaders in array A.
+
+An element is a leader if it is strictly greater than all the elements to its right side.
+
+NOTE:The rightmost element is always a leader.
+
+
+vector<int> Solution::solve(vector<int> &A) {
+int i=0,n=A.size(),maxx=A[n-1];
+vector<int>result;
+result.push_back(A[n-1]);
+if(n==1){
+    return result;
+}
+
+for(i=n-2;i>=0;i--){
+   if(A[i]>maxx){
+       result.push_back(A[i]);
+       maxx=A[i];
+   }
+}
+return result;
+}
