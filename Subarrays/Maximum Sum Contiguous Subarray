@@ -1,0 +1,23 @@
+Problem Description
+Find the contiguous non-empty subarray within an array, A of length N, with the largest sum.
+
+Problem Constraints
+1 <= N <= 1e6
+-1000 <= A[i] <= 1000
+
+
+int Solution::maxSubArray(const vector<int> &arr) {
+    int i,n=arr.size(),max=INT_MIN,sum=0;
+    for(i=0;i<n;i++){
+        sum+=arr[i];
+        if(max<sum){
+            max=sum;
+        }
+        if(sum<0){
+            sum=0; // This is done to ensure that the part till i does not decrese the sum of the upcoming subarrays, if it contributes positively then it has a hand in making max sum, otherwise it will only decrease the coming sum.
+        }           // -100 8 9 2 -17 8 6 7 8   Here we will exclude -100 as it negatively impacts our sum, but -17 is not excluded because 8+9+2-17=2 therefore it will contribute in increasing sum of subsequent elements.
+    }
+    return max;
+}
+
+TC: O(N) SC:O(1)
