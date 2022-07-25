@@ -1,0 +1,20 @@
+You are given an integer array C of size A. Now you need to find a subarray (contiguous elements) so that the sum of contiguous elements is maximum.
+But the sum must not exceed B.
+
+int Solution::maxSubarray(int A, int B, vector<int> &C) {
+    int start=0,i,end=0,maxx=INT_MIN,sum=0;
+    while(end<A){
+         sum+=C[end];
+         while(start<A && sum>B){
+             sum-=C[start];
+             start++;
+         }
+         if(start>=A){
+             break;
+         }
+         
+         maxx=max(maxx,sum);
+         end++;
+    }
+    return maxx;
+}
