@@ -1,0 +1,97 @@
+Given an integer A, generate a square matrix filled with elements from 1 to A2 in spiral order and return the generated square matrix.
+
+1 <= A <= 1000
+
+//Approach 1: Ek dum simple rowstart,colstart and dono k end smaintain krte hue print.
+
+vector<vector<int> > Solution::generateMatrix(int A) {
+    vector<vector<int> >result(A,vector<int>(A,0));
+    int row=0,col=0,row_start=0,col_start=0,count=1,col_count=A,row_count=A;
+    while(count<=A*A){
+        col=col_start;
+        row=row_start;
+        while(count<=A*A && col<col_count){
+            result[row][col]=count;
+            col++;
+            count++;
+        }
+        col--;
+        row++;
+ 
+        while(count<=A*A && row<row_count){
+            result[row][col]=count;
+            row++;
+            count++;
+        }
+        row--;
+        col--;
+
+        while(count<=A*A && col>=col_start){
+            result[row][col]=count;
+            col--;
+            count+=1;
+        }
+        row--;
+        col++;
+
+        while(count<=A*A && row>row_start){
+            result[row][col]=count;
+            row--;
+            count+=1;
+        }
+        if(count>A*A){
+            break;
+        }
+        col_count-=1;
+        row_count-=1;
+        row_start+=1;
+        col_start+=1;
+    }
+    return result;
+}
+
+Approach 2
+Algorithmic  Approach. Saw that we need to stop before end of each row so that we can traverse the rowise
+like in 1 2 3
+        4 5 6
+        7 8 9
+Traverse 1,2 in 1 iteration, then stop to traverse 3,6 in other and 9,8 in 3rd then 7,4 in 4th as now 1 should not be visited again. This idea came from this thing only that 
+while traversing the 7,4 we need to stop and not print/include 1 again.
+After that decrease n by 2 as from all sides(row and column), the matrix shrunk by 2.
+
+
+vector<vector<int> > Solution::generateMatrix(int A) {
+    vector<vector<int> > mat(A,vector<int>(A,0));
+    int i,k,j,row=0,col=0,n=A,count=1;
+    while(n>1){
+        for(k=1;k<n;k++){
+            mat[row][col]=count;
+            count++;
+            col++;
+        }
+        for(k=1;k<n;k++){
+            mat[row][col]=count;
+            count+=1;
+            row++;
+        }
+
+        for(k=1;k<n;k++){
+            mat[row][col]=count;
+            count+=1;
+            col--;
+        }
+
+        for(k=1;k<n;k++){
+            mat[row][col]=count;
+            count+=1;
+            row--;
+        }
+        n=n-2;
+        row++;
+        col++;
+    }
+    if(n==1){
+        mat[row][col]=count;
+    }
+    return mat;
+}
