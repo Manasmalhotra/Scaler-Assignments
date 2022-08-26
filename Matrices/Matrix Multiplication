@@ -1,0 +1,21 @@
+
+//Approach: Fill the new matrix row by row . Therefore after fixing row iterator now iterate through columns of first and rows of second accordingly.
+
+vector<vector<int> > Solution::solve(vector<vector<int> > &A, vector<vector<int> > &B) {
+int i=0,j,row=0,col=0,n=A.size(),m=A[0].size(),l=B.size(),k=B[0].size();
+vector<vector<int> >mat(n,vector<int>(k,0));
+
+while(row<n){
+    col=0;
+    while(col<m){
+        i=0;
+        while(i<k){
+              mat[row][i]+=A[row][col]*B[col][i];
+              i++;
+        }
+        col++;
+    }
+    row++;
+}
+return mat;
+}
