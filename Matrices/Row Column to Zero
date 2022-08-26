@@ -1,0 +1,66 @@
+You are given a 2D integer matrix A, make all the elements in a row or column zero if the A[i][j] = 0. Specifically, make entire ith row and jth column zero.
+
+Approach: Maintain first row and first column as the medium to store which row and which column need tobe zeroed.
+But while setting rows and columns to zero, process the first row and first column seperately because:
+
+1 2 3         0 2 3       0 0 0
+0 4 5   ----->0 4 5 ----> 0 0 0
+6 7 8         6 7 8       0 0 0 
+
+But correct ans --> 0 2 3
+                    0 0 0
+                    0 7 8
+                    
+Also, 1 0 3         0 0 3           0 0 0
+      4 5 6 ---->   4 5 6  -->      0 0 0
+      7 8 9         7 8 9           0 0 0
+
+But correct ans--> 0 0 0
+                   4 0 6
+                   7 0 9
+                   
+So what we do is 
+
+1 0 3
+4 5 6    --->  We traverse form i=0 and j=1 that is sub matrix 0 3 after this we check from i=1 and j-1if mat[i][0] or mat[j][0]==0 if yes we make mat[i][j]=0.
+7 8 9                                                         5 6
+                                                              8 9
+So matrix becomes  0 0 3. Now after this we check for i==0and j==0 and update matrix as    0 0 0
+                   4 0 6                                                                   4 0 6
+                   7 0 9                                                                   7 0 9
+                                                              
+vector<vector<int> > Solution::solve(vector<vector<int> > &matrix) {    
+    int i,j,iscol=0,n=matrix.size(),m=matrix[0].size();
+    for(i=0;i<n;i++){
+      if(matrix[i][0]==0){
+          iscol=1;
+      }
+      for(j=1;j<m;j++){
+          if(matrix[i][j]==0){
+              matrix[i][0]=0;
+              matrix[0][j]=0;
+          }
+        }
+    }
+    
+    for(i=1;i<n;i++){
+      for(j=1;j<m;j++){
+          if(matrix[i][0]==0 || matrix[0][j]==0){
+              matrix[i][j]=0;
+          }
+      }
+    }
+    
+    if(matrix[0][0]==0){
+        for(j=0;j<m;j++){
+            matrix[0][j]=0;
+        }
+    }
+    
+    if(iscol){
+        for(i=0;i<n;i++){
+            matrix[i][0]=0;
+        }
+    }
+    return matrix;
+    }
