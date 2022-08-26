@@ -1,0 +1,43 @@
+Problem Description
+
+Given an array of integers A and an integer B, find and return the minimum number of swaps required to bring all the numbers less than or equal to B together.
+
+Note: It is possible to swap any two elements, not necessarily consecutive.
+
+Initial approach which came to my mind was to take maximum number of consective such elements those are required and then subtract them from count of all suh elements.
+But later on I realised that some elements though are not consecutive may not be required to move at all.
+
+Eg; B=3  A=[1 4 2 3 7 8 2,7,7,7,1] So here using initial approach ans=5-2=3 but correct answer is 2, as if we move the last 1 in place of 4 in [1,4,2,3], we need not swap the starting 1's position.
+
+Therefore, Final Approach is since we want all the elements with <=B to be together first we need to see how many are actually there and then find maximum number of them together in one 
+subarray of that size.
+ 
+
+int Solution::solve(vector<int> &A, int B) {
+    int i,n=A.size(),w=0;
+    for(i=0;i<n;i++){
+        if(A[i]<=B){
+            w+=1;
+        }
+    }
+
+    int swap=0;
+    for(i=0;i<w;i++){
+        if(A[i]>B){
+            swap++;
+        }
+    }
+    int start=0,end=i,ans=swap;
+    while(end<n){
+        if(A[end]>B){
+            swap++;
+        }
+        if(A[start]>B){
+            swap--;
+        }
+        ans=min(swap,ans);
+        start++;
+        end++;
+    }
+    return ans;
+}
