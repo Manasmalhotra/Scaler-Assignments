@@ -134,3 +134,27 @@ string Solution::addBinary(string A, string B) {
     reverse(res.begin(),res.end());
     return res;
 }
+
+
+BEST CODe
+
+string Solution::addBinary(string A, string B) {
+    int i,j,n=A.length(),m=B.length(),sum=0;
+    string res="";
+    int carry=0;
+    i=n-1;
+    j=m-1;
+    while(i>=0 || j>=0 || carry){
+         sum=carry;
+        if(i>=0){sum+=(A[i]-'0');}
+        if(j>=0){sum+=(B[j]-'0');}
+        res.push_back((char)('0'+sum%2));
+        carry=sum/2;
+        i--;
+        j--;
+    }
+    reverse(res.begin(),res.end());
+    return res;
+}
+
+//This is also decimal addition is performed, only bases differ check notes for etter clarity.
