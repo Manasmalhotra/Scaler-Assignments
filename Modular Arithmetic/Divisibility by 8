@@ -1,0 +1,21 @@
+Problem Description
+You are given a number A in the form of a string. Check if the number is divisible by eight or not.
+
+Return 1 if it is divisible by eight else, return 0.
+
+Approach: Check if number formed from last 3 digits is divisible by 8 then true.==> Divisibility rule. TC:O(N) SC:O(1)
+
+int Solution::solve(string A) {
+    int i=0,n=A.length(),t=1,num=0;
+    for(i=n-1;i>=n-3;i--){
+        num=num+(A[i]-'0')*t;
+        t=t*10;
+    }
+    
+    if(num%8==0){
+        return 1;
+    }
+    else{
+        return 0;
+    }
+}
