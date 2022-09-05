@@ -1,0 +1,25 @@
+Problem Description
+Given two integers A and B, find the greatest possible positive integer M, such that A % M = B % M.
+
+int Solution::solve(int A, int B) {
+    return (A >= B) ? A - B: B - A;
+}
+
+Tc:O(1)
+A%M=B%M
+
+Suppose A>B
+
+B=B
+B=A-(A-B)
+B%A-B =A%(A-B) -(A-B)%(A-B)
+B%(A-B)=A%(A-B)
+Substitute M=A-B
+
+B%M=A%M
+Hence Proved. 
+
+Similarly it can be done for B>A which will give M=B-A.
+Thus M=abs(B-A)
+
+
