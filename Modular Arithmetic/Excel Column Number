@@ -1,0 +1,15 @@
+Problem Description
+Given a column title as appears in an Excel sheet, return its corresponding column number.
+
+Approach: Just like a number can be expresses as 117=7*1+10*1+100*1
+AB= 26*1+2*26^0=28.
+
+int Solution::titleToNumber(string A) {
+    int i,n=A.length()-1,value=0;
+    int t=1;
+    for(i=n;i>=0;i--){
+        value=value+(A[i]-'A'+1)*t;
+        t=t*26;
+    }
+    return value;
+}
