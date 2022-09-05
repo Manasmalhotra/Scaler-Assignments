@@ -1,0 +1,28 @@
+Problem Description
+Write a program to input an integer T and then for each test case input two integers A and B in two different lines and then print T lines containing Least Common Multiple (LCM) of two given 2 numbers A and B.
+
+LCM of two integers is the smallest positive integer divisible by both.
+
+#include<iostream>
+
+using namespace std;
+
+int main()  {
+    // YOUR CODE GOES HERE
+    // Please take input and print output to standard input/output (stdin/stdout)
+    // E.g. 'cin' for input & 'cout' for output
+    int t;
+    cin>>t;
+    while(t--){
+        int a,b;
+        cin>>a>>b;
+        int i,num=max(a,b);
+        for(i=num;i<=a*b;i+=num){
+            if(i%a==0 && i%b==0){
+                cout<<i<<endl;
+                break;
+            }
+        }
+    }
+    return 0;
+}
