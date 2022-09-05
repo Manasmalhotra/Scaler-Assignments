@@ -1,0 +1,27 @@
+vector<int> Solution::repeatedNumber(const vector<int> &A) {
+    long i,n=A.size(),s=0,sum=0,res1,res2;
+    vector<int>arr(A);
+
+    sort(arr.begin(),arr.end());
+    vector<int>result;
+
+    for(i=0;i<n-1;i++){
+        if(arr[i]==arr[i+1]){
+            res1=arr[i];//Found repeating element.
+        }
+        sum+=arr[i];
+    }
+    sum+=arr[n-1];                           // Size=6 arr[]=1 3 5 5 4 6; sum=24  missing number is 2 natural num sum= 6*(6+1)/2=21. This difference between actual and
+    s=n*(n+1)/2;                             //expected sum is created by missing element. Since actual>expected therefore number= repeating - (actual-expected)
+    if(s>sum){                                
+                                            // Size=6 arr[]=1 3 5 1 4 6 sum=20 . Sum of 6 natural nos=21. Now the extra number has decreased the sum expected .
+                                              therefore missing number= repeating+(Expected-Actual)
+        res2=res1+(s-sum);
+    }
+    else{
+        res2=res1-(sum-s);
+    }
+    result.push_back((int)res1);
+    result.push_back((int)res2);
+    return result;
+}
