@@ -1,0 +1,53 @@
+Given an array of integers, A of length N, find out the maximum sum sub-array of non negative numbers from A.
+
+The sub-array should be contiguous i.e., a sub-array created by choosing the second and fourth element and skipping the third element is invalid.
+
+Maximum sub-array is defined in terms of the sum of the elements in the sub-array.
+
+Find and return the required subarray.
+
+NOTE:
+
+    1. If there is a tie, then compare with segment's length and return segment which has maximum length.
+    2. If there is still a tie, then return the segment with minimum starting index.
+    
+Approach: Keep on iterating the array, if A[i]<0 reset the sum as you need to have sum of non negatives,also update teh start index as i+1 marking start of next subarray. Else keep on adding and if maxuimum sum<sum update max sum.
+Here we also keep track of length varaible so as to fulfill the tie breaker rule specified. We do not need to handle the rule regarding lower index because it  will
+be automatically taken care of sine we have strated from 0th index and are traversing in order of lower index only.
+
+TC: O(N) SC:O(1)
+
+vector<int> Solution::maxset(vector<int> &A) {
+    long sum=0,i,n=A.size(),maxx=INT_MIN,len=0,end=0,start=0,m_start=0,m_end=0;
+    vector<int>result;
+
+    for(i=0;i<n;i++){
+        if(A[i]<0){
+            sum=0;
+            start=i+1;
+            continue;
+        }
+        else{
+            sum+=A[i];
+            if(maxx<sum){
+              maxx=sum;
+              m_start=start;
+              m_end=i+1;
+              len=i-start+1;
+              
+            }
+
+            if(maxx==sum){
+                if(len<i-start+1){
+                    m_start=start;
+                    m_end=i+1;
+                    len=i-start+1;
+                }
+            }
+        }
+    }
+    for(i=m_start;i<m_end;i++){
+        result.push_back(A[i]);
+    }
+    return result;
+}
