@@ -1,0 +1,24 @@
+string Solution::addBinary(string A, string B) {
+    int n=A.length(),m=B.length();
+    int i=n-1,j=m-1,sum,carry=0;
+    string res="";
+
+    while(i>=0 || j>=0 || carry){
+        sum=0;
+        if(i>=0){
+            sum+=(A[i]-'0');
+            i--;
+        }
+        if(j>=0){
+            sum+=(B[j]-'0');
+            j--;
+        }
+        sum+=carry;
+        carry=sum/2;
+        res+=(char)('0'+sum%2);
+    }
+    reverse(res.begin(),res.end());
+    return res;
+}
+
+TC: O(max(len(A),len(B)) SC:O(1)
