@@ -29,6 +29,8 @@ mat[][]= 1 2 5
          
 Matrix need not be in order that value of last col of previous row< first element of next row.
 
+Brute Force: Search in array the element. TC:O(N*M).SC:O(1)
+
 TC: O(N+M) SC:O(1)
 Approach: If the element to be found is greater than the last element of the row that means it cannot be present in previous coluns as each row is sorted.
 If the element tobe found is smaller than the last column element we need to decrement column as it may be present in previous colums.
