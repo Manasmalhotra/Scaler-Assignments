@@ -1,0 +1,71 @@
+Given an array of positive integers A, two integers appear only once, and all the other integers appear twice.
+Find the two integers that appear only once.
+
+Note: Return the two numbers in ascending order.
+
+
+
+Approches: nested loops,sorting,hashing.
+
+Best Approach: arr[]=[1,2,2,3,4,4,5,5]
+xor=1^2^2^3^4^4^5^5= 1^3
+
+0001
+0011
+-----
+0010 --> Bits which are different for the two remaing number are only set in xor.
+Therefore we can differentiate the array into two sets basis these bits to get two sets of numbers and the two numbers we want will be in different groups.
+
+A = [1, 2, 3, 1, 2, 4]
+
+1^1^2^2^3^4= 3^4
+
+0011
+0100
+-----
+0111 =>taking 3rd bit from righ to distinguish
+
+Unset            set
+0001(1)            0100(4)
+0001(1)
+0010(2)
+0010(2)
+0011(3)
+
+Take xor of each of thee groups you will get the two elements 3 and 4.
+
+
+vector<int> Solution::solve(vector<int> &A) {
+    int i,n=A.size(),xor_result=0;
+    vector<int>res;
+    
+    for(i=0;i<n;i++){
+        xor_result=xor_result^A[i];
+    }
+    for(i=0;i<31;i++){
+        if((xor_result>>i)&1==1){
+            break;
+        }
+    }
+
+    int j,set=0,unset=0;
+
+    for(j=0;j<n;j++){
+        if((A[j]>>i)&1==1){
+            set=set^A[j];
+        }
+        else{
+            unset=unset^A[j];
+        }
+    }
+    if(set>unset){
+        res.push_back(unset);
+        res.push_back(set);
+    }
+    else{
+        res.push_back(set);
+        res.push_back(unset);
+    }
+
+    return res; 
+}
