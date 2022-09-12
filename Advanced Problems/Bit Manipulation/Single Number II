@@ -1,0 +1,75 @@
+Problem Description
+Given an array of integers, every element appears thrice except for one, which occurs once.
+
+Find that element that does not appear thrice.
+
+NOTE: Your algorithm should have a linear runtime complexity.
+
+Could you implement it without using extra memory?
+
+Approach 1: Use nested loop to find frequecy of each element if not equal to 3 then print.
+TC: O(N^2)
+
+Approach 2: Use hashmap to maintain frequencies then iterate array to get element with frequency!=3.TC:O(N) SC:O(N)
+Approach 3: Sort the array and get the answer using adjacents.TC: O(NlogN) SC:O(1)
+
+int Solution::singleNumber(const vector<int> &arr) {
+ vector<int>A=arr;
+ int i=0,n=A.size();
+ sort(A.begin(),A.end());
+ for(i=0;i<n-1;i++){
+    if(A[i]!=A[i+1]){
+        if(i==0){
+            return A[i];
+        }
+        else if(A[i]!=A[i-1]){
+            return A[i];
+        }
+    }
+ }
+ return A[n-1];
+}
+
+Approach 4: XOR.
+arr[]={1,1,1,2,3,3,3,4,4,4}
+xor=1^2^3^4 ==>Cannot predict the answer.
+
+Approach 4: Correct Approach.
+
+arr={1,1,1,2,2,2,3,4,4,4,6,6,6}
+
+001
+001
+001
+010
+010
+010
+011===>Ignore this
+100
+100
+100
+110
+110
+110
+
+Now observe as all the elements occur three times , each of the bit in the elements with freq=3 will have a frequency multiple of 3 times.
+Now take in the elemnt to be found. You will observe that whichever bit is set for the unique element will give (count of elements for which ith bit is set)%3==1.
+
+int Solution::singleNumber(const vector<int> &A) {
+    int i,j,unique_element=0,n=A.size(),count;
+    for(i=0;i<32;i++){
+       count=0;
+       for(j=0;j<n;j++){
+           if((A[j]>>i)&1==1){
+               count+=1;
+           }
+       }
+       if(count%3==1){
+           unique_element=unique_element+(1<<i);
+       }
+    }
+    return unique_element;
+}
+
+TC:O(32*N) SC:O(1)
+
