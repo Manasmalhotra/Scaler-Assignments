@@ -1,0 +1,44 @@
+
+long Solution::solve(int A, vector<int> &B) {
+    long i,ans=0,count=0,n=A;
+
+    for(i=0;i<n;i++){
+        if(B[i]==0){
+            count+=1;
+        }
+        else{
+            ans=ans+count*(count+1)/2;
+            count=0;
+        }
+    }
+    ans=ans+count*(count+1)/2;// Answer for number of subarrays with btwise OR=0. We have added in last also to include cases like 1 0 1 0 1 0 0 0 coz here last three 0s will not be included as loop will terminate.
+                              //Moreover if count=0 then answer will remain unchanged as in case 0 1 0 1 1 0 0 1
+    return n*(n+1)/2 - ans; //Total subarrays- Number of subarrays for OR=0= Number of subarrays with OR=1.
+}
+
+TC:O(N)
+SC:O(1)
+
+
+long Solution::solve(int A, vector<int> &B) {
+long total = 0;
+long prev = 0;
+for(int i=0; i< A; i++){
+if(B[i] == 0){
+total += prev;
+}
+else{
+prev = i+1;
+total += prev;
+}
+}
+return total;
+}
+
+arr[]=   1 0 1 0 0 1 0 0 0 1
+count=Sum(1 1 3 3 3 6 6 6 6 10)
+
+This is beacuse say in 101 we have 3 arrays with Or=1 that are 101,01,1 for which last index is the rightmost index.
+Now when 0 comes, the count for this index will also remain same as 1010,010,10 will have OR=1. Tereforein case the current element is 0 we take the subarrays 
+count for that of previous index. 
+Else we increment count by adding number of subarrays that can have current index as their last index
