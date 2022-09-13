@@ -1,0 +1,11 @@
+Problem Description
+Construct a binary number having A 1's followed by B 0's. Return the decimal value of that binary number.
+For eg -
+A = 3, B = 2
+Answer = (11100)2 . Return = 28
+
+int Solution::solve(int A, int B) {
+    return ((1<<A)-1)<<B;
+}
+
+We get A ones by pow(2,A)-1 always, then left shift the number to get the required 0s.
