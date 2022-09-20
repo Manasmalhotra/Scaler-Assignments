@@ -1,0 +1,104 @@
+Problem Description
+Given three integers A, B, and C, where A represents n, B represents r, and C represents p and p is a prime number greater than equal to n, find and return the value of nCr % p where nCr % p = (n! / ((n-r)! * r!)) % p.
+
+x! means factorial of x i.e. x! = 1 * 2 * 3... * x.
+
+NOTE: For this problem, we are considering 1 as a prime.
+
+Problem Constraints
+1 <= A <= 106
+1 <= B <= A
+A <= C <= 109+7
+
+Approach:
+
+1) Calculating the combination using  a table as in previous question nCr%m. But it gives Memory limit exceed error here due to larger constraints. 
+2) Since here p is a prime I got a idea of calculting the denominator using the fermat theorem and thus implemented the below solution.
+
+TC: O(A) SC:O(A) //for storing the factorials so as to get A-B factorial and Bfactoral also from same iteration.
+
+int pow(int A,int B, int C){
+    if(A==0){
+        return 0;
+    }
+    if(B==0){
+        return 1;
+    }
+    
+    long p=pow(A,B/2,C);
+    
+    if(B%2==1){
+        return ((p*p)%C*A)%C;
+    }
+    return (p*p)%C;
+}
+ 
+long long factorial[1000001];
+ 
+int Solution::solve(int A, int B, int C) {
+  long long i;
+ // vector<long long>fact(A+1);
+ factorial[0] = 1;
+  if(B==0 || B==A){
+      return (1%C);
+  }
+  if(B==1){
+      return (A%C);
+  }
+ 
+  for(i=1;i<=A;i++){
+      factorial[i]=(factorial[i-1] * i)%C;
+  }
+ 
+  long long comb=(factorial[A-B]*factorial[B])%C;
+  comb=pow(comb,C-2,C);
+  long long result=(comb*factorial[A])%C;
+ 
+  
+  
+ return result;
+}
+
+Better and More Optimised
+Approach:  We know that A!/A-B!B! here we shall cancel the bigger of A-B! and B! with A! and thus are calculating what shall remain after cancellation.
+TC: O(max(B,A-B)) SC:O(1)
+
+int pow(int A,int B, int C){
+    if(A==0){
+        return 0;
+    }
+    if(B==0){
+        return 1;
+    }
+    
+    long p=pow(A,B/2,C);
+    
+    if(B%2==1){
+        return ((p*p)%C*A)%C;
+    }
+    return (p*p)%C;
+}
+
+int Solution::solve(int A, int B, int C) {
+
+  if(B==0 || B==A){
+      return (1%C);
+  }
+  if(B==1){
+      return (A%C);
+  }
+
+  long i,numerator=1,denominator=1;
+  vector<long>factorial(B+1,1);
+  B=min(B,A-B);
+
+  for(i=0;i<B;i++){
+      numerator=(numerator%C*(A-i)%C)%C;
+      denominator=(denominator%C*(i+1)%C)%C;
+  }
+
+  denominator=pow(denominator,C-2,C);
+
+  long result=(numerator*denominator)%C;
+  return result;
+}
