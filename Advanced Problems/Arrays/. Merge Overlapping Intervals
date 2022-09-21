@@ -1,0 +1,63 @@
+Problem Description
+Given a collection of intervals, merge all overlapping intervals.
+
+Problem Constraints
+1 <= Total number of intervals <= 100000.
+
+Input Format
+First argument is a list of intervals.
+
+Output Format
+Return the sorted list of intervals after merging all the overlapping intervals.
+
+Example Input
+Input 1:
+
+[1,3],[2,6],[8,10],[15,18]
+
+Example Output
+Output 1:
+
+[1,6],[8,10],[15,18]
+
+TC:O(N) SC:O(N)
+
+bool compare(Interval a,Interval b){
+    if(a.start<b.start){
+        return true;         //To sort in increasing order return true if first element<second element.
+    }
+    if(a.start==b.start){
+        return (a.end<b.end);
+    }
+    return false;
+}
+
+vector<Interval> Solution::merge(vector<Interval> &A) {
+    // Do not write main() function.
+    // Do not read input, instead use the arguments to the function.
+    // Do not print the output, instead return values as specified
+    // Still have a doubt. Checkout www.interviewbit.com/pages/sample_codes/ for more details
+    int i=0,n=A.size();
+    vector<Interval>result;
+    sort(A.begin(),A.end(),compare);
+    int left=A[0].start,right=A[0].end;
+    for(i=1;i<n;i++){
+        if(A[i].start>right){
+            Interval n;
+            n.start=left;
+            n.end=right;
+            result.push_back(n);
+            left=A[i].start;
+            right=A[i].end;
+        }
+        else{
+            left=min(left,A[i].start);
+            right=max(right,A[i].end);
+        }
+    }
+    Interval k;
+    k.start=left;
+    k.end=right;
+    result.push_back(k);
+    return result;
+}
