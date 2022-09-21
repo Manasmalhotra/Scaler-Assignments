@@ -1,0 +1,75 @@
+Merge Intervals
+
+Problem Description
+Given a set of non-overlapping intervals, insert a new interval into the intervals (merge if necessary).
+
+You may assume that the intervals were initially sorted according to their start times
+
+Problem Constraints
+0 <= |intervals| <= 105
+
+
+
+Input Format
+First argument is the vector of intervals
+
+second argument is the new interval to be merged
+
+
+
+Output Format
+Return the vector of intervals after merging
+
+
+/**
+ * Definition for an interval.
+ * struct Interval {
+ *     int start;
+ *     int end;
+ *     Interval() : start(0), end(0) {}
+ *     Interval(int s, int e) : start(s), end(e) {}
+ * };
+ */
+ 
+ Approach: Merging criteria: the intervals have atleast one number in common. Define conditions for non overlapping is easier so do that and add merge case in last.
+ Wehave taken s and e variables so as to maintain the interval if we arecontinously merging one after another.
+ 
+ (1,2),(4,6),(7,8),(12,14)
+ New interval: (3,9)
+ Here merge of intervals does not stop at one point instead (3,9),(4,6) and (7,8) all get merged.
+ Our code does this one by one.First s=min(3,4) and e=max(9,6) ==>Interval=(3,9) .But still we don't push it in vector yet because it can be merged further.
+ Now, s=min(7,3), e=(8,9) so final interval==3,9. still do not push this in final and check further now as 9<12 insert the interval 3,9 and remaining intervals(CASE 2).
+ Then return result vector.
+ 
+ TC:O(N)
+ 
+vector<Interval> Solution::insert(vector<Interval> &intervals, Interval newInterval) {
+    // Do not write main() function.
+    // Do not read input, instead use the arguments to the function.
+    // Do not print the output, instead return values as specified
+    // Still have a doubt. Checkout www.interviewbit.com/pages/sample_codes/ for more details
+    int i,j,n=intervals.size(),s,e;
+    vector<Interval>result;
+    s=newInterval.start;
+    e=newInterval.end;
+    for(i=0;i<n;i++){
+       if(s>intervals[i].end){
+            result.push_back(intervals[i]);
+       } 
+       else if(e<intervals[i].start){
+           result.push_back(Interval(s,e));
+           for(j=i;j<n;j++){
+               result.push_back(intervals[j]);
+           }
+           return result;
+       }
+       else{
+           s=min(s,intervals[i].start);
+           e=max(e,intervals[i].end);
+       }
+    }
+    result.push_back(Interval(s,e)); // If till last elements are merging the last generated interval will not get inserted. Say (1,2),(4,5),(6,10). New: (7,11). 
+                                     //So at last index s and e will be update but after that i will increment and we will break out of loop, 
+                                     //also case 2 has no run because the new interval does not fit anywhere in the middle of the array
+    return result;
+}
