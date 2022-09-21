@@ -1,0 +1,37 @@
+Problem Description
+You are given an array of N integers, A1, A2, .... AN.
+
+Return the maximum value of f(i, j) for all 1 ≤ i, j ≤ N. f(i, j) is defined as |A[i] - A[j]| + |i - j|, where |x| denotes absolute value of x.
+
+
+Solve the equation: A[i]-A[j]+ i-j=(A[i]+i)-(A[j]+j)//1
+A[i]-A[j]+j-i=(A[i]-i)-(A[j]-j)//2
+A[j]-A[i]+i-j=(A[j]-j)-(A[i]-i)//3
+A[j]-A[i]+j-i=(A[j]+j)-(A[i]+i)//4
+
+//4 and 1 are same as the variables differ onlyand it does not matter if you calculate i or j first.
+//Similarly 2 and 3 are the same.
+
+So we have 2 equations at end
+
+A[i]-A[j]+ i-j=(A[i]+i)-(A[j]+j)//1
+A[i]-A[j]+j-i=(A[i]-i)-(A[j]-j)//2
+
+Equation 1 will be maximised if A[i]+i==>max and A[j]+j==>min
+Equation 2 will be maximised if A[i]-i==>max and A[j]-j==>min
+
+TC:O(N) SC:O(1)
+
+int Solution::maxArr(vector<int> &A) {
+    int maxx1=INT_MIN,minn1=INT_MAX,maxx2=INT_MIN,minn2=INT_MAX;
+    int i,j,n=A.size();
+    for(i=0;i<n;i++){
+        maxx1=max(maxx1,A[i]+i);
+        minn1=min(minn1,A[i]+i);
+        maxx2=max(maxx2,A[i]-i);
+        minn2=min(minn2,A[i]-i);
+    }
+    int diff1=maxx1-minn1;
+    int diff2=maxx2-minn2;
+    return max(diff1,diff2);
+}
