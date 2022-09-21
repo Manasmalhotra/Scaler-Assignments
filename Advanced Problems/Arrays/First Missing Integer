@@ -1,0 +1,55 @@
+Problem Description
+Given an unsorted integer array, A of size N. Find the first missing positive integer.
+
+Note: Your algorithm should run in O(n) time and use constant space.
+
+
+
+Problem Constraints
+1 <= N <= 1000000
+
+-109 <= A[i] <= 109
+
+
+
+Input Format
+First argument is an integer array A.
+
+
+
+Output Format
+Return an integer denoting the first missing positive integer.
+
+
+Approach 1: Suppose we have array size=N
+
+arr[]=1 2 3 4 5
+Then we can have upto N positive numbers in the array. if all these are present as in above array then answer is N+1 else , the one which is not presnt is ans;
+Note sorting will not work here. Eg: 1,2,2,3 here if you will try to check for A[i]!=i it will fail.
+
+a) Brute Force: If you will traverse the array foreach element then TC:O(N^2) SC:O(1)
+b) Store each element in a set/map and then iterate from 1 to N+1 to check which is missing.TC:O(N) SC:O(N)
+
+
+Approach 2: Linear time complexity with constant space
+If a particular number is present in the array then we can say numbers can be arranged in such a way that 1 should be present at index 0, 2 at index 1,3 at index 2
+and so on. After this position where there is a mismatch shall be the answer.
+
+int Solution::firstMissingPositive(vector<int> &A) {
+   int i,n=A.size();
+   for(i=0;i<n;i++){
+       while(A[i]<=n && A[i]>0 && A[i]-1!=i){// Verify if data is valid or not then chec if it is there on its correct position.
+           if(A[i]==A[A[i]-1]){// Check if duplicates are there and one of them is already at the correct position then the second one indicates a missing num and
+                               //we acnnot do anything in that case.
+               break;
+           }
+           swap(A[i],A[A[i]-1]);
+       }
+   }
+   for(i=0;i<n;i++){
+       if(A[i]-1!=i){
+           return i+1;
+       }
+   }
+   return n+1;
+}
