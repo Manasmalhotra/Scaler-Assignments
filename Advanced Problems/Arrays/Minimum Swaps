@@ -7,6 +7,37 @@ Note: It is possible to swap any two elements, not necessarily consecutive.
 Approach:
 
 Brute force.
+Time Complexity: O(N^2) SC:O(1)
+
+Approach: Count for numbers<=B. Then this is the size of the array that is required. So now check for all subarrays of this size for minimum swaps required, also a flag
+variable is maintained so that the answer is not updated to zero the last iteration when i is not able to enter the j loop.
+
+int Solution::solve(vector<int> &A, int B) {
+    int i,j,n=A.size(),count=0;
+    for(i=0;i<n;i++){
+       if(A[i]<=B){
+           count+=1;
+       }
+    }
+    
+    int ans=INT_MAX,c=0,f=0;
+
+    for(i=0;i<=n-count;i++){
+        for(j=i;j<i+count;j++){
+            f=1;
+            if(A[j]>B){
+                c+=1;
+            }
+        }
+        if(f){
+        ans=min(ans,c);
+        f=0;
+        }
+        c=0;
+    }
+    if(ans==INT_MAX){return 0;}
+    return ans;
+}
 
 Best Aproach : Count the elemnets <=B and maintain maxx count for<=B and slide the window for this. Ans=total count-maxx in a subarray
 int Solution::solve(vector<int> &A, int B) {
