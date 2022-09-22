@@ -1,0 +1,36 @@
+Problem Description
+Given an array of integers A of size N that is a permutation of [0, 1, 2, ..., (N-1)]. It is allowed to swap any two elements (not necessarily consecutive).
+
+Find the minimum number of swaps required to sort the array in ascending order.
+
+
+
+Problem Constraints
+1 <= N <= 100000
+0 <= A[i] < N
+
+
+
+Input Format
+The only argument given is the integer array A.
+
+
+
+Output Format
+Return the minimum number of swaps.
+
+Approach: Value at each index shall be equal to index itself as numbers are in the range [0,N-1]
+
+TC:O(N) SC:O(1)
+
+int Solution::solve(vector<int> &A) {
+    int i,n=A.size(),swaps=0;
+    while(i<n){
+        while(A[i]!=i){
+            swap(A[i],A[A[i]]);
+            swaps++;
+        }
+        i++;
+    }
+    return swaps;
+}
