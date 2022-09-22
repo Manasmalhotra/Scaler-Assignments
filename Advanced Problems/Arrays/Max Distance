@@ -1,0 +1,60 @@
+Problem Description
+Given an array, A of integers of size N. Find the maximum value of j - i such that A[i] <= A[j].
+
+
+
+Problem Constraints
+1 <= N <= 105
+
+-109 <= A[i] <= 109
+
+
+
+Input Format
+First argument is an integer array A of size N.
+
+
+
+Output Format
+Return an integer denoting the maximum value of j - i.
+
+Brute Force 
+TC:O(N^2) SC:O(1)
+Approach: For each index traverse from last index and exit as you find an elemnet greater than equal to this so that 
+int Solution::maximumGap(const vector<int> &A) {
+    int i,j,n=A.size(),ans=INT_MIN;
+    for(i=0;i<n;i++){
+        for(j=n-1;j>=0;j--){
+            if(A[j]>=A[i]){
+                ans=max(ans,j-i);
+                break;
+            }
+        }
+    }
+    return ans;
+}
+
+Approach: Maintain a right max array indicating the max element at right, till the current element is less than the rightmax.
+int Solution::maximumGap(const vector<int> &A) {
+    int i,j,n=A.size(),ans=0;
+    vector<int>right_max(n,0);
+    right_max[n-1]=A[n-1];
+    for(i=n-2;i>=0;i--){
+        right_max[i]=max(A[i],right_max[i+1]);
+    }
+
+    i=j=0;
+    while(i<n && j<n){
+        if(A[i]<=right_max[j]){
+            ans=max(ans,j-i);
+            j++; //Justified as we need to check for the next right if our current element is still less than an element at its right 
+                  //and if we have potential to further inc our answer
+        }
+        else{
+            i++; // Justified as when this current element is no longer greter we have to move to next element.Also we have a doubt that the next i will not get 
+            // the right[j] values which are passed over by the previous i, but that is not required as till the previous j's the previous i value was valid and thus that 
+            //answer will always be greater than we would get by subtrcting the current pos and those previous js.
+        }
+    }
+    return ans;
+}
