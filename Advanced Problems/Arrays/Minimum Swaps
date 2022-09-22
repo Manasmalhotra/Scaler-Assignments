@@ -1,0 +1,40 @@
+Problem Description
+
+Given an array of integers A and an integer B, find and return the minimum number of swaps required to bring all the numbers less than or equal to B together.
+
+Note: It is possible to swap any two elements, not necessarily consecutive.
+
+Approach:
+
+Brute force.
+
+Best Aproach : Count the elemnets <=B and maintain maxx count for<=B and slide the window for this. Ans=total count-maxx in a subarray
+int Solution::solve(vector<int> &A, int B) {
+    int i,n=A.size(),count=0;
+    for(i=0;i<n;i++){
+       if(A[i]<=B){
+           count++;
+       } 
+    }
+    
+    int c=0;
+    for(i=0;i<count;i++){
+        if(A[i]<=B){
+            c+=1;
+        }
+    }
+    
+    int start=0,end=i,maxx=c;
+    while(end<n){
+        if(A[end]<=B){
+            c+=1;
+        }
+        if(A[start]<=B){
+            c-=1;
+        }
+        maxx=max(maxx,c);
+        start++;
+        end++;
+    }
+    return count-maxx;
+}
