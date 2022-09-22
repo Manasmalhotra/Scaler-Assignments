@@ -1,0 +1,43 @@
+Problem Description
+
+Little Ponny has been given a string A, and he wants to find out the lexicographically minimum subsequence from it of size >= 2. Can you help him?
+
+A string a is lexicographically smaller than string b, if the first different letter in a and b is smaller in a. 
+For example, "abc" is lexicographically smaller than "acc" because the first different letter is 'b' and 'c' which is smaller in "abc".
+
+Problem Constraints
+
+1 <= |A| <= 105
+
+A only contains lowercase alphabets.
+##TIP: if(n<2)==>return zz
+
+Approach: Iterate in the string and find minimum alphabet till i<n-1 as n-1th element cannot be taken as min because then we willnot be able to make it a string of size =2
+TC:O(N) SC:O(N)//For storing result string.
+
+Find the minimum alphabet and contue from the index+1 from where it was found.
+
+string Solution::solve(string A) {
+    int i,n=A.length();
+    string res;
+
+    char anschar='z',ansindex;
+
+    for(i=0;i<n-1;i++){
+        if(anschar>A[i]){
+            anschar=A[i];
+            ansindex=i;
+        }
+    }
+
+    res+=anschar;
+    char s='z';
+    for(i=ansindex+1;i<n;i++){
+        if(s>A[i]){
+            s=A[i];
+        } 
+    }
+
+    res+=s;
+    return res;
+}
