@@ -1,0 +1,50 @@
+Problem Description
+In the classic problem of the Towers of Hanoi, you have 3 towers numbered from 1 to 3 (left to right) and A disks numbered from 1 to A (top to bottom) of different sizes which can slide onto any tower.
+The puzzle starts with disks sorted in ascending order of size from top to bottom (i.e., each disk sits on top of an even larger one).
+You have the following constraints:
+Only one disk can be moved at a time.
+A disk is slid off the top of one tower onto another tower.
+A disk cannot be placed on top of a smaller disk.
+You have to find the solution to the Tower of Hanoi problem.
+You have to return a 2D array of dimensions M x 3, where M is the minimum number of moves needed to solve the problem.
+In each row, there should be 3 integers (disk, start, end), where:
+
+disk - number of disk being moved
+start - number of the tower from which the disk is being moved
+stop - number of the tower to which the disk is being moved
+
+
+Problem Constraints
+1 <= A <= 18
+
+
+Input Format
+The first argument is the integer A.
+
+
+Output Format
+Return a 2D array with dimensions M x 3 as mentioned above in the description.
+
+
+Approach: In order to maintain the given costraints the bets approach is : Transfer n-1 disks from first tower to second. Thentransfer nth disk to the 3rd tower.
+After this transfer n-1 disks from 2 tower to 3rd tower.
+
+If you notice these are subproblems to the main problem of transferring n dics from tower 1 to 3.
+
+Time Complexity: O(2^n): Two subproblems for each value of n.
+Space Complexity: O(N): As max stack size is N+1 (goes from N to 0).
+
+void hanoi(vector<vector<int> >&result,int N,int A,int B,int C){
+    if(N==0){
+        return; // Base Case if N==0 we havenothing to do.
+    }
+    hanoi(result,N-1,A,C,B);//Transfer N-1 disks from source to Auxillary
+    result.push_back({N,A,C});//Transfer Nth disk from source to final.
+    hanoi(result,N-1,B,A,C); // Transfer N-1 Disks from auxillary to destination.
+}
+
+vector<vector<int> > Solution::towerOfHanoi(int A) {
+    vector<vector<int> >result;
+    hanoi(result,A,1,2,3);
+    return result;
+}
