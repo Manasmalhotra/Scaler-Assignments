@@ -1,0 +1,37 @@
+Given two strings A and B, find if A is a subsequence of B.
+
+Return "YES" if A is a subsequence of B, else return "NO".
+
+
+Input Format
+
+The first argument given is the string A.
+The second argument given is the string B.
+Output Format
+
+Return "YES" if A is a subsequence of B, else return "NO".
+Constraints
+
+1 <= lenght(A), length(B) <= 100000
+'a' <= A[i], B[i] <= 'z'
+
+Input 1:
+    A = "bit"
+    B = "dfbkjijgbbiihbmmt"
+Output 1:
+    YES
+
+TC: O(M+N) SC:O(1)
+
+string Solution::solve(string A, string B) {
+   int i,j=0,n=A.length(),m=B.length();
+   for(i=0;i<n;i++){
+       while(j<m && B[j]!=A[i]){//Increment till you not get the ith character of A. In process if j>m then we can say "NO".Since sequence matters here this  
+           j++;
+       }
+       if(j>=m){
+         return "NO";
+       }
+   }
+   return "YES";
+}
