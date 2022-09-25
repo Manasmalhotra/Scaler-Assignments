@@ -1,0 +1,50 @@
+Problem Description
+Given an integer array A of N integers, find the pair of integers in the array which have minimum XOR value. Report the minimum XOR value.
+
+
+
+Problem Constraints
+2 <= length of the array <= 100000
+0 <= A[i] <= 109
+
+
+
+Input Format
+First and only argument of input contains an integer array A.
+
+
+
+Output Format
+Return a single integer denoting minimum xor value.
+
+Example: [0,2,5,7]
+
+0000
+0010
+0101
+0111
+
+0^2=2     2^5=7            5^7=0010=2
+0^5=5     2^7=0101=5
+0^7=7
+
+Brute Force : Iterate all pairs: TC:O(N^2)
+
+Optimised: TC:O(NlogN)
+
+int Solution::findMinXor(vector<int> &A) {
+int i,n=A.size(),minn=INT_MAX,start=0,len=0;
+int res=0;
+sort(A.begin(),A.end());
+for(i=0;i<n;i++){
+    len++;
+    res=res^A[i];
+    if(len==2){
+        len-=1;
+        minn=min(minn,res);
+        res=res^A[start];
+        start++;
+    }
+}
+return minn;
+}
