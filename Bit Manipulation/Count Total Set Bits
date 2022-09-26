@@ -1,0 +1,86 @@
+Problem Description
+
+Given a positive integer A, the task is to count the total number of set bits in the binary representation of all the numbers from 1 to A.
+
+Return the count modulo 109 + 7.
+
+
+
+Problem Constraints
+
+1 <= A <= 109
+
+
+
+Input Format
+
+First and only argument is an integer A.
+
+
+
+Output Format
+
+Return an integer denoting the ( Total number of set bits in the binary representation of all the numbers from 1 to A )modulo 109 + 7.
+
+
+
+Example Input
+
+Input 1:
+
+ A = 3
+Input 2:
+
+ A = 1
+
+
+Example Output
+
+Output 1:
+
+ 4
+
+Brute force
+For each arr[i] count number of set bits.
+O(32*A):TC
+
+int Solution::solve(int A) {
+    int i,j;
+    long count=0,mod=1e9+7;
+    for(i=1;i<=A;i++){
+        for(j=0;j<32;j++){
+            if((i>>j)&1==1){
+                count=(count+1)%mod;
+            }
+        }
+    }
+    return count;
+}
+
+Optimised: For each bit there is a pattern 
+0000
+0001
+0010
+0011
+0100
+0101
+Observe for bit 0 the pattern in bits is 01.
+For bit 1 pattern is 0011.
+For bit 2pattern is 00001111.
+
+Number of 1s=Nuber of 0s in ech pattern
+Length of pattern=2*2^i
+Also number of ones in a pattern 2^i.
+i: Bit number
+
+
+
+int Solution::solve(int A) {
+    long i,N=A+1,pow=1,M=1e9+7,count=0,ans=0;
+    for(i=0;i<32;i++){
+        count=((N/(pow*2))*pow + max(0L,(N%(pow*2))-pow))%M;
+        ans=(ans+count)%M;
+        pow*=2;
+    }
+    return ans;
+}
