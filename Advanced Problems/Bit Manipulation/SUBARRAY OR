@@ -1,0 +1,69 @@
+Problem Description
+You are given an array of integers A of size N.
+
+The value of a subarray is defined as BITWISE OR of all elements in it.
+
+Return the sum of value of all subarrays of A % 109 + 7.
+
+
+
+Problem Constraints
+1 <= N <= 105
+
+1 <= A[i] <= 108
+
+
+
+Input Format
+The first argument given is the integer array A.
+
+
+
+Output Format
+Return the sum of Value of all subarrays of A % 109 + 7.
+
+
+Brute Force:
+Consider all the subarrays OR and add them in a sum variable
+
+int Solution::solve(vector<int> &A) {
+    long i,j,n=A.size(),sum=0,res,mod=1e9+7;
+    for(i=0;i<n;i++){
+        res=0;
+        for(j=i;j<n;j++){
+            res=res|A[j];
+            sum=(sum+res)%mod;
+        }
+    }
+    return sum;
+}
+
+Optimised: For all subarray OR sum. Take focus on every and all subarray.. By thiswe remember contribution technique. Thus go bit by bit.
+For eachbit get its contribution by getting the number of subarrays with OR=1 as these will only contibute from that bit.
+
+long subarrayOR1(vector<int>&temp){
+    long i,n=temp.size(),count=0,ans=0;//Remember to mark return type of this function to be long else error
+    for(i=0;i<n;i++){
+        if(temp[i]==0){
+             count+=1;
+        }
+        else{
+            ans+=count*(count+1)/2;
+            count=0;
+        }
+    }
+    ans+=count*(count+1)/2;
+    return n*(n+1)/2-ans;
+}
+
+int Solution::solve(vector<int> &A) {
+    long i,j,n=A.size(),sum=0,mod=1e9+7;
+    for(i=0;i<32;i++){
+        vector<int>temp;
+        for(j=0;j<n;j++){
+            temp.push_back((A[j]>>i)&1);
+        }
+        sum=(sum+subarrayOR1(temp)*(1<<i))%mod;
+    }
+    return sum;
+}
