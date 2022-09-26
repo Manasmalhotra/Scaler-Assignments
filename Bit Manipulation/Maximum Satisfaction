@@ -1,0 +1,56 @@
+Problem Description
+Given an array of integers A of size N denoting the quality of the fruits. A[i] represents the fruit quality of the ith fruit.
+
+Shaun needs to pick four fruits, but he needs to pick them so that his satisfaction value will be maximum.
+
+If a, b, c, and d are fruit quality of the four fruits picked, then the satisfaction value(a, b, c, d) = (a & b & c & d) where & is bitwise AND operator.
+
+Find the maximum satisfaction value Shaun can obtain
+
+Problem Constraints
+4 <= N <= 105
+
+1 <= A[i] <= 2 * 109
+
+
+
+Input Format
+The only argument given is the integer array A.
+
+
+
+Output Format
+Return the maximum satisfaction value Shaun can obtain.
+
+Approach: It is a fact that we will get the maximum result when the most significant bit is set. Therefore for each bit starting 31 check if we have numbers>=4 
+with that bit set then make nother numbers=0 so that they cannot influence the answer now as they are not giving the max answer.
+
+00110001-A
+00110000-B
+00100000-C
+00111000-D
+00000100-E
+00001001-F
+
+Here if E and F are not made zero they can influence the answer later on.
+
+int Solution::solve(vector<int> &A) {
+    int i,j,ans=0,n=A.size(),count=0;
+    for(i=31;i>=0;i--){
+        count=0;
+        for(j=0;j<n;j++){
+            if(((A[j]>>i)&1)==1){
+                count+=1;
+            }
+        }
+        if(count>=4){
+            ans=ans+(1<<i);
+            for(j=0;j<n;j++){
+                if(((A[j]>>i)&1)==0){
+                    A[j]=0;
+                }
+            }
+        }
+    }
+    return ans;
+}
