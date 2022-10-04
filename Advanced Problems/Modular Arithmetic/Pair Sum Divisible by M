@@ -1,0 +1,43 @@
+Problem Description
+Given an array of integers A and an integer B, find and return the number of pairs in A whose sum is divisible by B.
+
+Since the answer may be large, return the answer modulo (109 + 7).
+
+Approach: 
+Brute Force: for each i, traverse from i+1 to n and search for a number such that (arr[j]+arr[i])%B=0
+TC:O(N^2) SC:O(1)
+
+Optimise:
+(A+B)%M=(A%M+B%M)%M
+Now you can either maintain a array of size =M As remainders(A%M and B%M) can range from 0 to M-1 or maintain a hashmap.
+Then Traverse the remainder array ,check if M-current_element is present in the array.Because if their sum==M then only we get answer
+
+Edge Cases: (5+5)%10=0
+25 35 3 4 2 2 10 20 30
+Here 25 and 35 form the pair but both will be stored at same psition as they have same remainder.
+Also 10,20,30 form pairs with each other but for all of them Num%M=0
+
+int Solution::solve(vector<int> &A, int B) {
+    long count=0,i,n=A.size(),M=1e9+7;
+
+    vector<long>arr(B,0);
+    for(i=0;i<n;i++){
+        arr[A[i]%B]+=1;
+    }
+
+    for(i=0;i<=B/2;i++){//Check only till equal to M/2 because after this the pairs shall start repeating. like in case of 10: (1,9),(2,8),(3,7),(4,6),(5,5),(6,4),(7,3),..
+        if(i==0){//Edge case for rem=0
+            count=(count+arr[i]*(arr[i]-1)/2)%M;
+        }
+        else if((B-i)==i){//Edge Case: Elements with same remainder result in ans.
+            count=(count+arr[i]*(arr[i]-1)/2)%M;
+        }
+        else{
+            count=(count+arr[i]*arr[B-i])%M;
+        }
+    }
+    return count;
+}
+
+
+
