@@ -1,0 +1,44 @@
+Problem Description
+Given two integers A and B. Find the value of A-1 mod B where B is a prime number and gcd(A, B) = 1.
+
+A-1 mod B is also known as modular multiplicative inverse of A under modulo B.
+
+
+
+Problem Constraints
+1 <= A <= 109
+1<= B <= 109
+B is a prime number
+
+Approach: As m is prime we can apply fermat's little theorem here.
+Fermat's little theorem:
+Given b,m and gcd(b,m)==1 if m is prime and m>1 then (b^(m-1))%m=1;
+(b^(m-1))%m *b^-1%m=b^-1%m
+Taking mod on both sides
+((b^(m-1))%m *b^-1%m))%m=(b^-1%m)%m
+(b^(m-1)*b^(-1))%m=(b^-1%m)   [Using properties of mod]
+(b^(m-2))%m=(b^-1%m) 
+Therefore we have answer as power(b,m-2,m)
+Where power function is function for fast exponentiation.
+
+TC:log(m-2)~log(m)
+
+int power(int A,int B,int M){
+    if(A==0){
+        return 0;
+    }
+    if(B==0){
+        return 1;
+    }
+    long p=power(A,B/2,M);
+    if(B%2==0){
+        return (p*p+M)%M;
+    }
+    else{
+        return (((p*p)%M *A)+M)%M;
+    }
+}
+
+int Solution::solve(int A, int B) {
+    return power(A,B-2,B);
+}
