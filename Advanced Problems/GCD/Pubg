@@ -1,0 +1,41 @@
+Problem Description
+There are N players, each with strength A[i]. when player i attack player j, player j strength reduces to max(0, A[j]-A[i]). When a player's strength reaches zero, it loses the game, and the game continues in the same manner among other players until only 1 survivor remains.
+
+Can you tell the minimum health last surviving person can have?
+
+Input 1:
+
+ A = [6, 4]
+ 
+ Suppose the person with health 6 attacks first
+ then the person with health 4 dies and min=6 ==>not favourable
+ 
+ Let 4 attack
+ A=[2,4]
+ IF 2 attacks
+ A=[2,2]
+ One of them will attack.
+ A=[2,0]
+ Therefore min health required to survive is 2.
+ 
+ Here we see that we always want the person with less strength to attack to find the minimum strength requires that.
+ 
+ The repeated subtraction till one of the players has 0 health===Idea of gcd
+ 
+ TC:O(N)
+ 
+ int gcd(int A, int B) {
+    if(B==0){
+        return A;
+    }
+    return gcd(B,A%B);
+}
+
+int Solution::solve(vector<int> &A) {
+    int i,n=A.size(),gcds=A[0];
+    for(i=1;i<n;i++){
+        gcds=gcd(gcds,A[i]);
+    }
+    return gcds;
+}
+
