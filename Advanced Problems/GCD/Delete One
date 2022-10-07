@@ -71,7 +71,7 @@ int Solution::solve(vector<int> &A) {
 
 Optimised: Major time goes in again and again calculating the gcd by excluding the current element.
 Therefore we shall focus on getting the gcd of all the elements before the current element and the elements after it. Then take gcd of these two parts to get gcd post excluding the current element.
-
+TC:(N*log(max(prefix,suffix))
 int gcd(int a,int b){
     if(a%b==0){
         return b;
