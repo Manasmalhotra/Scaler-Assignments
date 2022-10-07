@@ -1,0 +1,102 @@
+Problem Description
+
+Given an integer array A of size N. You have to delete one element such that the GCD(Greatest common divisor) of the remaining array is maximum.
+
+Find the maximum value of GCD.
+
+
+
+Problem Constraints
+
+2 <= N <= 105
+1 <= A[i] <= 109
+
+
+
+Input Format
+
+First argument is an integer array A.
+
+
+
+Output Format
+
+Return an integer denoting the maximum value of GCD.
+
+
+
+Example Input
+
+Input 1:
+
+ A = [12, 15, 18]
+
+Example Output
+
+Output 1:
+
+ 6
+ 
+ Example Explanation
+
+Explanation 1:
+
+ If you delete 12, gcd will be 3.
+ If you delete 15, gcd will be 6.
+ If you delete 18, gcd will 3.
+ Maximum vallue of gcd is 6.
+ 
+Brute Force: TC:O(N^2) SC:O(1): TLE
+
+int gcd(int a,int b){
+    if(a%b==0){
+        return b;
+    }
+    return gcd(b,a%b);
+}
+
+int Solution::solve(vector<int> &A) {
+    int i,j,n=A.size(),ans,maxx=INT_MIN;
+    for(i=0;i<n;i++){
+        ans=0;
+        for(j=0;j<n;j++){
+            if(i!=j){
+                ans=gcd(ans,abs(A[j]));
+            }
+        }
+        maxx=max(maxx,ans);
+    }
+    return maxx;
+}
+
+Optimised: Major time goes in again and again calculating the gcd by excluding the current element.
+Therefore we shall focus on getting the gcd of all the elements before the current element and the elements after it. Then take gcd of these two parts to get gcd post excluding the current element.
+
+int gcd(int a,int b){
+    if(a%b==0){
+        return b;
+    }
+    return gcd(b,a%b);
+}
+
+int Solution::solve(vector<int> &A) {
+    int i,j,n=A.size();
+    int prefix[n],suffix[n];
+    prefix[0]=A[0];
+    suffix[n-1]=A[n-1];
+    
+    for(i=1;i<n;i++){
+        prefix[i]=gcd(prefix[i-1],A[i]);
+    }
+    for(i=n-2;i>=0;i--){
+        suffix[i]=gcd(suffix[i+1],A[i]);
+    }
+
+    int ans,maxx=max(prefix[n-2],suffix[1]);
+
+    for(i=1;i<n-1;i++){
+        ans=gcd(prefix[i-1],suffix[i+1]);
+        maxx=max(maxx,ans);
+    }
+    return maxx;
+}
