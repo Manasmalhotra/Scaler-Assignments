@@ -15,6 +15,7 @@ Return an Integer, i.e number of distinct prime divisors of G.
 1 <= A[i] <= 1e5
 
 Approach: As per constraints G can be a very large number so it does not makes sense to get the product of all the numbers.Instead we can get the prime factors of all the numbers and insert them in a set so as to avoid duplicates.
+TC: O(N*sqrt(max(A))*log(max(A))==>The log part is for insertion in set. The insertion in stl set takes O(logn) complexity because it is internally implemented using bst.
 int Solution::solve(vector<int> &A) {
     int i,j,n=A.size(),count=0;
     vector<bool> isprime(100001,true);
