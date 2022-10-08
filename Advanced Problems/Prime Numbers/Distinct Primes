@@ -1,0 +1,43 @@
+You have given an array A having N integers. Let say G is the product of all elements of A.
+
+You have to find the number of distinct prime divisors of G.
+
+
+
+Input Format
+
+The first argument given is an Array A, having N integers.
+Output Format
+
+Return an Integer, i.e number of distinct prime divisors of G.
+
+1 <= N <= 1e5
+1 <= A[i] <= 1e5
+
+Approach: As per constraints G can be a very large number so it does not makes sense to get the product of all the numbers.Instead we can get the prime factors of all the numbers and insert them in a set so as to avoid duplicates.
+int Solution::solve(vector<int> &A) {
+    int i,j,n=A.size(),count=0;
+    vector<bool> isprime(100001,true);
+    isprime[0]=isprime[1]=false;
+    for(i=2;i*i<100001;i++){
+        if(isprime[i]==true){
+        for(j=i*i;j<100001;j+=i){
+            isprime[j]=false;
+         }
+        }
+    }
+    set<int>s;
+    for(i=0;i<n;i++){
+       for(j=1;j*j<=A[i];j++){
+           if(A[i]%j==0){
+               if(isprime[j]){
+                 s.insert(j);
+               }
+               if((A[i]/j)!=j && isprime[A[i]/j]){
+                   s.insert(A[i]/j);
+               }
+           }
+       } 
+    }
+    return s.size();
+}
