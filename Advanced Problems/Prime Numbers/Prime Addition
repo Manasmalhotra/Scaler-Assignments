@@ -1,0 +1,12 @@
+You are given an even number N and you need to represent the given number as the sum of primes. The prime numbers do not necessarily have to be distinct. It is guaranteed that at least one possible solution exists.
+
+You need to determine the minimum number of prime numbers needed to represent the given number.
+
+Approach: According to Goldbach's Conjecture: Every even number is sum of two prime numbers.
+TC:O(1)
+int Solution::solve(int A) {
+    if(A==2){
+        return 1; If A itself is prime then ans=1. Only 2 is even prime number so for A==2 ans=1;For rest answer should be 2 as Goldbach conjecture should hold.
+    }
+    return 2;
+}
