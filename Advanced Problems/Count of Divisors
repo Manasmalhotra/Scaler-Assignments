@@ -1,0 +1,74 @@
+Problem Description
+Given an array of integers A, find and return the count of divisors of each element of the array.
+
+NOTE: The order of the resultant array should be the same as the input array.
+
+Problem Constraints
+1 <= length of the array <= 100000
+1 <= A[i] <= 106
+
+
+
+Input Format
+The only argument given is the integer array A.
+
+
+
+Output Format
+Return the count of divisors of each element of the array in the form of an array.
+
+
+Brute Force: Count factors for each array element and insert the count in answer array.
+
+TC:O(N*sqrt(N))
+vector<int> Solution::solve(vector<int> &A) {
+    int i,n=A.size(),j,count;
+    vector<int>result;
+    for(i=0;i<n;i++){
+         count=0;
+         for(j=2;j*j<=A[i];j++){
+             if(A[i]%j==0){
+                 if(A[i]/j!=j){
+                    count+=2; 
+                 }
+                 else{
+                     count+=1;
+                 }
+             }
+         }
+         if(A[i]!=1){
+             count+=2;
+         }
+         else{
+             count+=1;
+         }
+         result.push_back(count);   
+    }
+    return result;
+}
+
+Optimised:
+Approach: What if we mark the factors as: First increase count for numbers whose factor is 2, then mark numbers having 3 as a factor, then 4 then 5 and so on.
+But how to limit this calculation?
+The idea is : Maximum number for which we want factors==>max(array)
+
+TC:O(Maxx*log(MAxx))
+
+vector<int> Solution::solve(vector<int> &A) {
+    int i,j,n=A.size(),maxx=INT_MIN;
+    for(i=0;i<n;i++){
+        maxx=max(maxx,A[i]);
+    }
+    vector<int>store(maxx+1,1);
+    store[1]=1;
+    for(i=2;i<=maxx;i++){
+        for(j=i;j<=maxx;j+=i){
+            store[j]+=1;
+        }
+    }
+    vector<int>result;
+    for(i=0;i<n;i++){
+        result.push_back(store[A[i]]);
+    }
+    return result;
+}
