@@ -1,0 +1,22 @@
+Problem Description
+
+You are given two positive numbers A and B . You need to find the maximum valued integer X such that:
+
+X divides A i.e. A % X = 0
+X and B are co-prime i.e. gcd(X, B) = 1
+
+Approach : 120= 3*5*2*2*2 50=5*5*2 ==> 12=3*2*2 50=5*5*2 ==>6=3*2 25=5*5;return 6 since now A does not have anything in common with B
+
+int gcd(int a,int b){
+    if(b==0){
+        return a; 
+    }
+    return gcd(b,a%b);
+}
+
+int Solution::cpFact(int A, int B) {
+    while(gcd(A,B)!=1){// while loop because it is possible that for some common prime factor, the power of factor in A can be greater than that in B so it will take multiple rounds to break this common link.
+        A=A/gcd(A,B);
+    }
+    return A;
+}
