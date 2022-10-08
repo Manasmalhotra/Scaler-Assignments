@@ -1,0 +1,73 @@
+Given an array A having N positive numbers. You have to find the number of Prime subsequences of A.
+
+A Prime subsequence is one that has only prime numbers, for example [2, 3], [5] are the Prime subsequences where [2, 4] and [1, 2, 3, 4] are not.
+
+Approach: Simple find all the prime numbers in the range and then check how many numbers are prime as these can only be there in subsequences. Number of subsequences =2^n for n elements
+int Solution::solve(vector<int> &A) {
+    int i,j,n=A.size();
+    vector<int>prime(1000001,true);
+    prime[0]=prime[1]=false;
+    
+    for(i=2;i*i<=1000001;i++){
+      if(prime[i]==true){
+        for(j=(i*i);j<=1000001;j+=i){
+            prime[j]=false;
+        }
+     }
+    }
+    
+    long count=1;
+    long M=1e9+7;
+    for(i=0;i<n;i++){
+        if(prime[A[i]]==true){
+           count=(count<<1)%M;// 2*count for two options include current element or exclude it. 
+           Remember to count here only if you will think of counting the primes in array and then 2^(count of primes) then it will overflow in 
+           bitwise operators. You should use fast exponentiation there as calculation can go till 2^(1000) because that is max length of array.
+        }
+    }
+
+    return count-1;//Subtract the empty subsequence.
+}
+
+
+//Using pow function
+
+long pow(long A,long B,long C){
+    if(A==0 || A==1){
+        return A;
+    }
+    if(B==0){
+        return 1;
+    }
+    long p=pow(A,B/2,C);
+    if(B%2==0){
+        return (p*p)%C;
+    }
+    else{
+        return ((p*p)%C *A)%C;
+    }
+}
+
+int Solution::solve(vector<int> &A) {
+    int i,j,n=A.size();
+    vector<int>prime(1000001,true);
+    prime[0]=prime[1]=false;
+    
+    for(i=2;i*i<=1000001;i++){
+      if(prime[i]==true){
+        for(j=(i*i);j<=1000001;j+=i){
+            prime[j]=false;
+        }
+     }
+    }
+    
+    long count=0;
+    long M=1e9+7;
+    for(i=0;i<n;i++){
+        if(prime[A[i]]==true){
+           count=count+1;
+        }
+    }
+    long res=pow(2,count,M);
+    return res-1;
+}
