@@ -1,0 +1,60 @@
+Problem Description
+Given an even number A ( greater than 2 ), return two prime numbers whose sum will be equal to the given number.
+
+If there is more than one solution possible, return the lexicographically smaller solution.
+
+Brute Force: Iterate till given number from 2 and check if i and A-i are prime or not. If yes we found the answer.
+
+//Better: Precompute prime numbers and the check if i and A-i are primes.
+
+vector<int> Solution::primesum(int A) {
+    int i,j;
+    vector<bool>arr(A+1,true);
+    arr[0]=arr[1]=false;
+    vector<int>result;
+
+    for(i=2;i<=A;i++){
+        if(arr[i]==true){
+            for(j=(2*i);j<=A;j+=i){
+                arr[j]=false;
+            }
+        }
+    }
+
+    for(i=A-1;i>=0;i--){
+        if(arr[i]==true && arr[A-i]==true){
+            result.push_back(A-i);
+            result.push_back(i);
+            return result;
+        }
+    }
+
+    return result;
+}
+
+//Optimization:
+
+vector<int> Solution::primesum(int A) {
+    int i,j;
+    vector<bool>arr(A+1,true);
+    arr[0]=arr[1]=false;
+    vector<int>result;
+
+    for(i=2;i*i<=A;i++){
+        if(arr[i]==true){
+            for(j=(i*i);j<=A;j+=i){//Optimization for marking nos as prime ,as : 6=3*2 can be seen as 6=2*3 so 2 would have already marked it so we may start with 3*3.
+                arr[j]=false;
+            }
+        }
+    }
+
+    for(i=A-1;i>=0;i--){
+        if(arr[i]==true && arr[A-i]==true){
+            result.push_back(A-i);
+            result.push_back(i);
+            return result;
+        }
+    }
+
+    return result;
+}
