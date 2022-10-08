@@ -1,0 +1,56 @@
+Problem Description
+Given an integer A, which denotes the number of doors in a row numbered 1 to A. All the doors are closed initially.
+
+A person moves to and fro, changing the states of the doors as follows: the person opens a door that is already closed and closes a door that is already opened.
+
+In the first go, he/she alters the states of doors numbered 1, 2, 3, … , A.
+In the second go, he/she alters the states of doors numbered 2, 4, 6 ….
+In the third go, he/she alters the states of doors numbered 3, 6, 9 …
+This continues till the A'th go in, which you alter the state of the door numbered A.
+
+Find and return the number of open doors at the end of the procedure.
+
+Observation: Upon taking 1-2 examples we realise that the numbers with odd number of factors can only have open doors. Also if we focus we can realise that these numbers are
+perfect squares since in perfect square the numer is written as :num=a*a and factor is only counted once that is a.
+
+Now number of perfect squares upto A==sqrt(A)
+Brute Force:Go through each number and open/close doors as directed.
+
+int Solution::solve(int A) {
+    int i,j,count=0;
+    vector<int>doors(A+1,0);
+    for(i=1;i<=A;i++){
+        for(j=i;j<=A;j+=i){
+            doors[j]=1-doors[j];
+        }
+    }
+
+    for(i=1;i<=A;i++){
+        if(doors[i]==1){
+            count+=1;
+        }
+    }
+    return count;
+}
+
+Better Approach can be to found sqrt(A) in sqrt time.
+
+Best Approach: As discussed above sqrt (A) using binary search.
+TC:O(Log A)
+int Solution::solve(int A) {
+   long low=1,high=A,mid,ans;
+   while(low<=high){
+       mid=low+(high-low)/2;
+       if(mid*mid==A){
+           return mid;
+       }
+       else if(mid*mid>A){
+           high=mid-1;
+       }
+       else{
+           low=mid+1;
+           ans=mid;
+       }
+   }
+   return ans;
+}
