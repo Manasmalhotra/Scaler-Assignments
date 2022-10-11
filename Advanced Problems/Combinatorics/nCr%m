@@ -39,3 +39,21 @@ int Solution::solve(int A, int B, int C) {
   }
   return mat[A][B];
 }
+
+Best TC:O(N*R) SC:O(R): As we need only values from previous n we can maintain a single vector of size R and update the previous state in current to get the next state.
+
+int Solution::solve(int A, int B, int C) {
+    vector<long>result(B+1,0);
+    vector<long>temp(B+1,0);
+    int i,j;
+    result[0]=1;
+    temp[0]=1;
+    
+    for(i=1;i<=A;i++){
+        for(j=1;j<=B;j++){
+            temp[j]=(result[j]+result[j-1])%C;
+        }
+        result=temp;
+    }
+    return result[B];
+}
