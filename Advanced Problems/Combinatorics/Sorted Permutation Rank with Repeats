@@ -1,0 +1,67 @@
+Problem Description
+Given a string A, find the rank of the string amongst its permutations sorted lexicographically. Note that the characters might be repeated. If the characters are repeated, we need to look at the rank in unique permutations. Look at the example for more details.
+
+NOTE:
+
+The answer might not fit in an integer, so return your answer % 1000003 where 1000003 is a prime number.
+String A can consist of both lowercase and uppercase letters. Characters with lesser ASCII values are considered smaller, i.e., 'a' > 'Z'.
+
+
+Problem Constraints
+1 <= len(A) <= 1000000
+
+Approach: I was getting stuck on the part for calculating the repetition for the fixed element but later on realised that its all repitions should be considered as 
+the one getting at first place can also occur there its frequency number of times.
+
+long pow(long a,long b,long c){
+    if(a==0){
+        return 0;
+    }
+    if(b==0){
+        return 1;
+    }
+    long p=pow(a,b/2,c);
+    if(b%2==0){
+        return (p*p)%c;
+    }
+    else{
+        return ((p*p)%c *a)%c;
+    }
+}
+
+long factorial[1000001];
+int Solution::findRank(string A) {
+    int i,n=A.length();
+    map<char,int>maps;
+    map<char,int>::iterator it;
+    factorial[0]=1;
+
+    for(i=1;i<=n;i++){
+        factorial[i]=(factorial[i-1]*i)%1000003;
+    }
+    
+    for(i=0;i<n;i++){
+        maps[A[i]]+=1;
+    }
+
+    int j,count=0;
+    long ans=0;
+    for(i=0;i<n-1;i++){
+        count=0;
+        for(j=i+1;j<n;j++){
+            if(A[j]<A[i]){
+                count+=1;
+            }
+        }
+        long repeat=1;
+        for(it=maps.begin();it!=maps.end();it++){
+             repeat=(repeat*factorial[it->second])%1000003;
+        }
+        ans=(ans%1000003+ ((count*factorial[n-i-1])%1000003*pow(repeat,1000001,1000003))%1000003)%1000003;
+        maps[A[i]]-=1;
+        if(maps[A[i]]==0){
+            maps.erase(A[i]);
+        }
+    }
+    return ans+1;
+}
