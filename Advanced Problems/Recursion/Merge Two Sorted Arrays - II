@@ -1,0 +1,40 @@
+Problem Description
+Given two sorted arrays of integers A and B, sorted in ascending order.
+
+Merge the two arrays A and B into a single array such that it contain all the elements from A and B and it remain sorted at the same time.
+
+Find and return the resultant merged array.
+
+Approach: A[]={1,2,3,8,9,10,11}
+B[]={4,5,6,7,14,15,16}
+
+A[]={1,2,3,8,9,10,11,0,0,0,0,0,0,0}
+B[]={4,5,6,7,14,15,16}
+
+A[]={1,2,3,4,5,6,7,8,9,10,11,14,15,16} // Here p2:pointer of B will be exhausted after entering 4 at its correct position. After this p1 remains but we do not 
+need a while loop because the remainig elements are already in their correct poistion.
+
+You may understand the process by solving the above example.
+
+TC:O(N+M) SC:O(1)
+
+vector<int> Solution::solve(vector<int> &A, vector<int> &B) {
+    int i,n=A.size(),m=B.size();
+    for(i=0;i<B.size();i++){
+        A.push_back(0);
+    }
+    int p1=n-1,p2=m-1,p3=n+m-1;
+
+    while(p1>=0 && p2>=0){
+        if(B[p2]>A[p1]){
+            A[p3--]=B[p2--];
+        }
+        else{
+            A[p3--]=A[p1--];
+        }
+    }
+    while(p2>=0){
+        A[p3--]=B[p2--];
+    }
+    return A;
+}
