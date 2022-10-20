@@ -17,3 +17,29 @@ int Solution::solve(vector<int> &A) {
     }
     return maxx;
 }
+
+Approach 2: Sort the array
+TC:O(NlogN)
+A = [1, 2, 44, 3], Ans=3
+A = [2, 6, 4], Ans=4
+
+Observe here the answer is always second largest number as second largest%largest==second largest
+
+Approach 3: Find max and second max in a single iteration and give answer
+
+int Solution::solve(vector<int> &A) {
+    int i,j,n=A.size(),ans,maxx=INT_MIN;
+    int first=0,second=0;
+    for(i=0;i<n;i++){
+       if(first<A[i]){
+           second=first;
+           first=A[i];
+       }
+       else if(first!=A[i] && second<A[i]){
+           second=A[i];
+       }
+    }
+    return second%first;
+}
+
+
