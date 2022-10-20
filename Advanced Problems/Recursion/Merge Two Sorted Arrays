@@ -1,0 +1,33 @@
+Problem Description
+Given two sorted integer arrays A and B, merge B and A as one sorted array and return it as an output.
+
+Approach: Merge two lists according to logic that te one which has lower value shouldbe inseredand its pointer shall be incremented.
+TC:O(N+M)
+
+vector<int> Solution::solve(const vector<int> &A, const vector<int> &B) {
+    int p1=0,p2=0,p3=0,n=A.size(),m=B.size();
+    vector<int>temp;
+    
+    while(p1<n && p2<m){
+        if(A[p1]<B[p2]){
+            temp.push_back(A[p1]);
+            p1++;
+        }
+        else{
+            temp.push_back(B[p2]);
+            p2++;
+        }
+    }
+
+    while(p1<n){
+        temp.push_back(A[p1]);
+        p1++;
+    }
+
+    while(p2<m){
+        temp.push_back(B[p2]);
+        p2++;
+    }
+
+    return temp;
+}
