@@ -1,0 +1,17 @@
+Problem Description
+You are given A, B and C .
+Calculate the value of (A ^ B) % C
+
+
+int Solution::solve(int A, int B, int C) {
+    if(B==0){
+        return 1;
+    }
+    long p=solve(A,B/2,C);
+    if(B%2==0){
+        return (p*p +C)%C;
+    }
+    else{
+        return (((p*p)%C * A%C)+C)%C;
+    }
+}
