@@ -1,0 +1,39 @@
+Problem Description
+Given an integer array A of size N. You can remove any element from the array in one operation.
+The cost of this operation is the sum of all elements in the array present before this operation.
+
+Find the minimum cost to remove all elements from the array.
+
+Problem Constraints
+0 <= N <= 1000
+1 <= A[i] <= 103
+
+Approach: Exclude the greater elements first because otherwise they will keep on adding up to the cost and will increase it.
+Example : 13 2 9 1 6 8 7 9 0
+0 1 2 6 7 8 9 13  Sum=46(0+1+2+6+7+8+9+13)
+cost=45
+Remove 0
+cost=45+45=90(1+2+6+7+8+9+13)
+Remove 1
+cost=90+44=134 (2+6+7+8+9+13)
+
+Here you can see that the greater elements keep on increasing the cost if not removed.
+Therefore we shall remove the greater element 13 first then 9 then 8 then 7 and so on.
+
+
+
+int Solution::solve(vector<int> &arr) {
+   int i,n=arr.size(),sum=0,cost=0;
+
+   for(i=0;i<n;i++){
+       sum+=arr[i];
+   }
+   sort(arr.begin(),arr.end(),greater<int>());
+   for(i=0;i<n;i++){
+       cost+=sum;
+       sum-=arr[i];
+   }
+   return cost;
+}
+
+
