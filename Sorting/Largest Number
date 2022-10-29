@@ -1,0 +1,39 @@
+Problem Description
+Given an array A of non-negative integers, arrange them such that they form the largest number.
+
+Note: The result may be very large, so you need to return a string instead of an integer.
+
+Approach: 30,3,34
+303<330 so 3 should come first
+3034<3430 so 34 shouldcome before 30
+343>334 so34 shall come before 3
+34,3,30
+
+
+bool compare(int a,int b){
+    string x=to_string(a)+to_string(b);
+    string y=to_string(b)+to_string(a);
+    int result=x.compare(y);
+    if(result>0){
+        return true;
+    }
+    return false;
+}
+
+
+string Solution::largestNumber(const vector<int> &A) {
+    vector<int>v(A);
+    sort(v.begin(),v.end(),compare);
+    int i,n=v.size();
+    string s;
+
+    for(i=0;i<n;i++){
+        if(v[i]==0 && s=="0"){
+            s="0";
+        }
+        else{
+        s+=to_string(v[i]);
+        }
+    }
+    return s;
+}
