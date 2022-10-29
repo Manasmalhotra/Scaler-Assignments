@@ -1,0 +1,67 @@
+Problem Description
+Given an array of integers A. If i < j and A[i] > A[j], then the pair (i, j) is called an inversion of A. 
+Find the total number of inversions of A modulo (109 + 7).
+
+Brute Force: For each index i, iterate from 0 to i and see how many elements >A[i].
+TC:O(N^2)
+
+Approach: Merge Sort. while doing the merge sort we divide the array intotwo halves left and right,sort them and then merge them. So in merging we see which side has smaller
+element and the smaller one is inserted first so here we have to do nothing but just count the number of times the left has a higher number than right because
+index wise automatically left<right so if A[left]>A[right] then this satisfies the condition given in the question.
+
+TC:O(NlogN):array will be divided into halves for logn times and then the sorted halves are combined in N time.
+Recurrence: T(n)=2T(n/2)+n;T(n/2)=2T(n/4)+n/2
+T(n)=4(n/4)+2n
+T(n)=8T(n/8)+4n
+T(n)=2^kT(n/2^k)+kn
+As T(1)=1
+n/2^k=1
+k=log2n
+T(n)=1+nlogn
+
+Space Complexity: logN +N: logN for recursive stack and N as N/2 and N/2 will be merged at last step.
+
+long mod=1e9+7;
+
+void merge(vector<int>&A,int low,int mid,int high,int &count){
+    vector<int>temp;
+    int p1=low,p2=mid+1;
+    while(p1<=mid && p2<=high){
+        if(A[p1]<=A[p2]){
+            temp.push_back(A[p1]);
+            p1++;
+        }
+        else{
+            count=(count+mid-p1+1)%mod;
+            //cout<<A[p1]<<" "<<A[p2]<<endl;
+            temp.push_back(A[p2]);
+            p2++;
+        }
+    }
+    while(p1<=mid){
+        temp.push_back(A[p1]);
+        p1++;
+    }
+    while(p2<=high){
+        temp.push_back(A[p2]);
+        p2++;
+    }
+    int k=0;
+    for(int i=low;i<=high;i++){
+        A[i]=temp[k++];
+    }
+}
+void mergesort(vector<int>&A,int low,int high,int &count){
+    if(low>=high){
+        return;
+    }
+    int mid=low+(high-low)/2;
+    mergesort(A,low,mid,count);
+    mergesort(A,mid+1,high,count);
+    merge(A,low,mid,high,count);
+}
+int Solution::solve(vector<int> &A) {
+    int n=A.size(),count=0;
+    mergesort(A,0,n-1,count);
+    return count;
+}
