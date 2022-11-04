@@ -1,0 +1,105 @@
+Problem Description
+Given an array of integers A, we call (i, j) an important reverse pair if i < j and A[i] > 2*A[j].
+Return the number of important reverse pairs in the given array A.
+
+
+
+Problem Constraints
+1 <= length of the array <= 105
+
+-2 * 109 <= A[i] <= 2 * 109
+
+
+
+Input Format
+The only argument given is the integer array A.
+
+
+
+Output Format
+Return the number of important reverse pairs in the given array A.
+
+Example:
+
+1 3 2 3 1
+
+1 3 2   3 1
+1 3  2  3   1
+
+[1] [3]   [2]  [3]  [1]
+
+[1,3] [2] [1,3]==>count for this =1;
+
+[1,2,3]   [1,3]
+
+[1,1,2,3,3]==> Problem is at this step as the 1 in the right part gets added to the array before we even encounter the 3 occuring in the left part. So this pair cannot be
+counted if we will try to count in the merge function as in inversion count question.
+
+Therefore , we will count number in both pairs by iterating them before merging them.
+
+TC:O(NlogN) SC:O(N)
+
+
+void merge(vector<int>&A,int s,int m,int e,int &count){
+    int p1=s,p2=m+1;
+    vector<int>temp;
+    while(p1<=m && p2<=e){
+        if((long)A[p1]>(long)2*A[p2]){
+            count=count+m-p1+1;
+            p2++;
+        }
+        else{
+            p1++;
+        }
+    }
+
+    p1=s,p2=m+1;
+
+    while(p1<=m && p2<=e){
+        if(A[p1]<A[p2]){
+            temp.push_back(A[p1]);
+            p1++;
+        }
+        else{
+            temp.push_back(A[p2]);
+            p2++;
+        }
+    }
+
+    while(p1<=m){
+        temp.push_back(A[p1]);
+        p1++;
+    }
+
+      while(p2<=e){
+        temp.push_back(A[p2]);
+        p2++;
+    }
+
+    int i,k=0;
+    for(i=s;i<=e;i++){
+        A[i]=temp[k++];
+    }
+}
+
+void mergesort(vector<int>&A,int s,int e,int &count){
+    if(s>=e){
+        return;
+    }
+    int m=s+(e-s)/2;
+    mergesort(A,s,m,count);
+    mergesort(A,m+1,e,count);
+    merge(A,s,m,e,count);
+}
+
+int Solution::solve(vector<int> &A) {
+   int count=0;
+   mergesort(A,0,A.size()-1,count);
+   return count;
+}
+
+
+
+
+
+
