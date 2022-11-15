@@ -1,0 +1,32 @@
+Problem Description
+Given an array of integers A of size N where N is even.
+
+Divide the array into two subsets such that
+
+1.Length of both subset is equal.
+2.Each element of A occurs in exactly one of these subset.
+Magic number = sum of absolute difference of corresponding elements of subset.
+
+Note: You can reorder the position of elements within the subset to find the value of the magic number.
+
+Maximum difference : Sort the array get difference from opposite ends.
+Minimum Difference: Sort get difference of adjacents.
+
+vector<int> Solution::solve(vector<int> &A) {
+    int i,n=A.size();
+    sort(A.begin(),A.end());
+    long p1=0,p2=n-1,sum=0,sum1=0,mod=1e9+7;
+    while(p1<p2){
+        sum=(sum+A[p2]-A[p1])%mod;
+        p1++;
+        p2--;
+    }
+    p1=0;
+    p2=1;
+    while(p2<n){
+        sum1=(sum1+A[p2]-A[p1])%mod;
+        p2+=2;
+        p1+=2;
+    }
+    return {sum,sum1};
+}
