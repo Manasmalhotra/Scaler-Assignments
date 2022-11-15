@@ -1,0 +1,52 @@
+Problem Description
+Given an array of integers A, find and return the peak element in it. An array element is peak if it is NOT smaller than its neighbors.
+
+For corner elements, we need to consider only one neighbor. We ensure that answer will be unique.
+
+NOTE: Users are expected to solve this in O(log(N)) time. The array may have duplicate elements.
+
+Problem Description
+Given an array of integers A, find and return the peak element in it. An array element is peak if it is NOT smaller than its neighbors.
+
+For corner elements, we need to consider only one neighbor. We ensure that answer will be unique.
+
+Approach:
+5 4 7 8 100 80 90
+102 101 100 7 5 4 3-Continously increasing mid-1
+99 98 100 7 5 3 -- Peak occurred if data decreased or increase
+97 98 100 7 5 3 --- Continously decreasing. 
+In all the above cases we get a peak on the side we have a greater element.
+
+First check if the mid is the peak.
+If not see which side has greater elemnt and move there.
+But Why?
+So moving to side with increasing data always gives result.
+Because there can be two cases that is if data always increases 
+If yes then last elemnt in the sequence will be peak.
+If data decreases
+int Solution::solve(vector<int> &A) {
+   int n=A.size();
+
+   if(A[0]>A[1]){
+       return A[0];
+   }
+   if(A[n-1]>A[n-2]){
+       return A[n-1];
+   }
+
+   int low=1,high=n-2,mid;
+
+   while(low<=high){
+       mid=(low+high)/2;
+       if(A[mid]>=A[mid+1] && A[mid]>=A[mid-1]){
+           return A[mid];
+       }
+       else if(A[mid+1]>=A[mid]){
+           low=mid+1;
+       }
+       else{
+           high=mid-1;
+       }
+   }
+    
+}
