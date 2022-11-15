@@ -1,0 +1,83 @@
+QuickSort
+
+5| 1 2 7 8 9 6 5
+pivot
+on left of pivot==> all numbers less than pivot
+on right==> all numbers greater than pivot
+
+4| 3 2 5 1 2 5
+1 2 2 3 5 5
+
+Algorithm is unstable. Beacuse poistion change due to pivot and duplicates ar enot given any consideration.
+
+
+#Method 1
+
+int rearrange(vector<int>&A,int s,int e){
+    int pivot=A[s];
+    int p1=s+1,p2=e;
+    while(p1<=p2){
+        if(A[p1]<pivot){
+            p1++;
+        }
+        else if(A[p2]>pivot){
+            p2--;
+        }
+        else{
+            swap(A[p1],A[p2]);
+            p1++;
+            p2--;
+        }
+    }
+
+    swap(A[s],A[p2]);
+    return p2;
+}
+
+void quicksort(vector<int>&A,int start,int end){
+    if(start>=end){
+        return;
+    }
+    int p=rearrange(A,start,end);
+    quicksort(A,start,p-1);
+    quicksort(A,p+1,end);
+}
+vector<int> Solution::solve(vector<int> &A) {
+    quicksort(A,0,A.size()-1);
+    return A;
+}
+
+#Method 2
+int rearrange(vector<int>&A,int low,int high){
+    int p1=low+1,p2=high,pivot=A[low];
+    while(p1<=p2){
+        while(A[p1]<=pivot){
+            p1++;
+        }
+        while(A[p2]>pivot){
+            p2--;
+        }
+        if(p1<p2){
+            swap(A[p1],A[p2]);
+            p1++;
+            p2--;
+        }
+    }
+    swap(A[low],A[p2]);
+    return p2;
+}
+
+void quicksort(vector<int>&A,int low,int high){
+    if(low>=high){
+        return;
+    }
+    int pIndex=rearrange(A,low,high);
+    quicksort(A,low,pIndex-1);
+    quicksort(A,pIndex+1,high);
+}
+
+vector<int> Solution::solve(vector<int> &A) {
+    int n=A.size();
+    quicksort(A,0,n-1);
+    return A;
+}
