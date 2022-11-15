@@ -1,0 +1,26 @@
+Problem Description
+Given a sorted array A of size N and a target value B, return the index (0-based indexing) if the target is found.
+If not, return the index where it would be if it were inserted in order.
+
+NOTE: You may assume no duplicates in the array. Users are expected to solve this in O(log(N)) time.
+
+Approach: Binary Search to search in sorted data of course! If data is not present we can keep track of the largest number lesser than the required number and add 1 to their index
+To get the required answer.
+
+int Solution::searchInsert(vector<int> &A, int x) {
+    int low=0,high=A.size()-1,mid,ans=-1;
+    while(low<=high){
+        mid=low+(high-low)/2;
+        if(A[mid]==x){
+            return mid;
+        }
+        else if(A[mid]<x){
+            ans=mid;
+            low=mid+1;
+        }
+        else{
+            high=mid-1;
+        }
+    }
+    return ans+1;
+}
