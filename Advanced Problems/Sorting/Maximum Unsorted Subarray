@@ -1,0 +1,81 @@
+Problem Description
+Given an array A of non-negative integers of size N. Find the minimum sub-array Al, Al+1 ,..., Ar such that if we sort(in ascending order) that sub-array, 
+then the whole array should get sorted.
+If A is already sorted, output -1.
+
+Approach1 : Just sort the array and compare form the original array, the start position hwere mismatch occurs and the end position where mismatch occurs.
+TC:O(NlogN)
+SC:O(N)
+
+vector<int> Solution::subUnsort(vector<int> &A) {
+    vector<int>B=A;
+    sort(B.begin(),B.end());
+    vector<int>result;
+    int i,n=A.size(),start=-1,end=-1;
+    for(i=0;i<n;i++){
+        if(A[i]!=B[i]){
+            if(start==-1){
+                start=i;
+            }
+            else{
+                end=i;
+            }
+        }
+    }
+        if(start==-1){
+        result.push_back(-1);
+        }
+        else{
+            result.push_back(start);
+            result.push_back(end);
+        }
+        return result;
+}
+
+Approach 2: Two Pointers
+Example: 1 2 3 15 15 4 6 4 15 15 4 16 17 18 
+                  i              j
+Min=4 max=15
+l=3   r=10
+Here we got the ans=3,10
+
+The logic for finding i and j is clear that we need to find start and end where disturbance starts.
+But we also nedd the logic for maximum and minimum and then left and right beacuse in case of duplicates as in above array we may not get the exact starting 
+and ending of the distubed order because that disturbed part can also follow the order within itself. As 15<=15 we moved to second 15.
+
+1 2 3 4 5 16 17 18 19 6 7 8 -3 -2 -1.
+                   i         j
+Now you get maxx=19 and minn=-3. When you traverse l=0, r=n-1.
+ans={0,14}
+
+vector < int > Solution::subUnsort(vector < int > & A) {
+    vector < int > ans;
+    int n = A.size();
+    int i = 0, j = n - 1;
+    while (i < n - 1 and A[i] <= A[i + 1]) {
+        i++;
+    }
+    while (j > 0 and A[j] >= A[j - 1]) {
+        j--;
+    }
+    if (i == n - 1) { // if array is already sorted, output -1
+        ans.push_back(-1);
+        return ans;
+    }
+    // find the maximum and and minimum element from A[i]...A[j]
+    int mn = A[i + 1], mx = A[i + 1];
+    for (int k = i; k <= j; k++) {
+        mx = max(mx, A[k]);
+        mn = min(mn, A[k]);
+    }
+    int l = 0, r = n - 1;
+    while (A[l] <= mn and l <= i) {
+        l++;
+    }
+    while (A[r] >= mx and r >= j) {
+        r--;
+    }
+    ans.push_back(l);
+    ans.push_back(r);
+    return ans;
+}
