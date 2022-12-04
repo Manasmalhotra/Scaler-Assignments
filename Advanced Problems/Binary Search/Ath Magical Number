@@ -1,0 +1,18 @@
+int Solution::solve(int A, int B, int C) {
+    long long int low=min(B,C),high=1LL*A*min(B,C),mid,mod=1e9+7,count;
+    long long int lcm=(1LL*B*C)/__gcd(B,C);
+    while(low<=high){
+        mid=low+(high-low)/2;
+        count=(1LL*mid/B)+mid/C-mid/lcm;
+        if(count==A && (mid%B==0 || mid%C==0)){ // Maybe the generated number is not a multiple of any of these as there can be amny elements in between.
+           return mid%mod;
+        }
+        else if(count>=A){ // Equal to sign is there as we need first element which satifies the condition and hence go to left and elements just greater than required number can also fulfill the condition of count.
+                           //One such example: A=19,B=11,C=13.
+            high=mid-1;
+        }
+        else{
+            low=mid+1;
+        }
+    }
+}
