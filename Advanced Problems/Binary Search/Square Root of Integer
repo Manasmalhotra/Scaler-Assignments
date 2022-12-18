@@ -1,0 +1,54 @@
+Problem Description
+Given an integer A.
+
+Compute and return the square root of A.
+
+If A is not a perfect square, return floor(sqrt(A)).
+
+DO NOT USE SQRT FUNCTION FROM THE STANDARD LIBRARY.
+
+NOTE: Do not use the sqrt function from the standard library. Users are expected to solve this in O(log(A)) time.
+
+
+
+Problem Constraints
+0 <= A <= 1010
+
+
+
+Input Format
+The first and only argument given is the integer A.
+
+Output Format
+Return floor(sqrt(A))
+
+Brute Force: TC: Sqrt(n)
+int Solution::sqrt(int A) {
+long i,sq=0;
+for(i=1;(1LL*i*i)<=A;i++){
+    if(1LL*i*i==A){
+        return i;
+    }
+    if(1LL*i*i<A){
+        sq=i;
+    }
+}
+return sq;
+}
+
+Binary Search: O(LogN)
+
+int Solution::sqrt(int A) {
+    int low=1,high=A,ans=0,mid;
+    while(low<=high){
+        mid=low+(high-low)/2;
+        if((long)mid*mid<=A){
+            ans=mid;
+            low=mid+1;
+        }
+        else{
+            high=mid-1;
+        }
+    }
+    return ans;
+}
