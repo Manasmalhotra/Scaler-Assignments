@@ -1,0 +1,38 @@
+Approach: Search space is minimum to maximum element. For every element in search space we check that the number of elements less than the current element are greater
+than B or not. If yes then we store in ur answer and move towards left to get the first occurrence which satifies this condition.
+Else we need a greater element so move right.
+
+Say: Arr[]={1,2,3,4,5,7,8,9} k=7 Ans=7
+low=1 high=9  1+9/2=5 Number of elements<=5==>5 which is less than 7 so move to right. 6+9/2=7 which is our answer.
+Say if {1,2,3,4,5,10,11,14,18,23} k=7 1+23/2=12 here check will return 7 so we store it as answr and see if there are more elements satisfying condition.
+We do this beacuse we know that 11 being present in the array is the minimum value at will satify our condition because as we go down 11 we will have check<7.
+
+int check(vector<int>A,int mid){
+    int i,n=A.size(),count=0;
+    for(i=0;i<n;i++){
+        if(mid>=A[i]){
+           count++;
+        }
+    }
+    return count;
+}
+
+int Solution::solve(const vector<int> &A, int B) {
+    int i,n=A.size(),maxx=INT_MIN,minn=INT_MAX;
+    for(i=0;i<n;i++){
+        maxx=max(maxx,A[i]);
+        minn=min(minn,A[i]);
+    }
+    int low=minn,high=maxx,mid,ans;
+    while(low<=high){
+        mid=low+(high-low)/2;
+        if(check(A,mid)>=B){
+            ans=mid;
+            high=mid-1;
+        }
+        else{
+            low=mid+1;
+        }
+    }
+    return ans;
+}
