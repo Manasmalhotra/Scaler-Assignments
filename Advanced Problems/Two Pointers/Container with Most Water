@@ -1,0 +1,36 @@
+Brute Force.
+Approach consider all possible vertical lines and get the maximum area possible.
+TC:O(N^2)
+
+int Solution::maxArea(vector<int> &A) {
+    int i,j,n=A.size(),area=0;
+    for(i=0;i<n;i++){
+        for(j=i+1;j<n;j++){
+            area=max(area,min(A[i],A[j])*(j-i));
+        }
+    }
+    return area;
+}
+
+Optimised Approach.
+we see width of the container is maximum whenwe choose P1=0 and p2=n-1. The area = min(A[0],A[n-1])*(n-1).
+Now it can happen that we hve area greater than this if height component overpowers the width. So we will move the pointer of the side which has minimum because 
+this height cannot incease our area any further.
+
+TC:O(N)
+
+int Solution::maxArea(vector<int> &A) {
+    int p1=0,p2=A.size()-1,maxx=0,h,area;
+    while(p1<p2){
+        h=min(A[p1],A[p2]);
+        area=(p2-p1)*h;
+        maxx=max(maxx,area);
+        if(h==A[p1]){
+            p1++;
+        }
+        else{
+            p2--;
+        }
+    }
+    return maxx;
+}
