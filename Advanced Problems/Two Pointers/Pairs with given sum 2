@@ -1,0 +1,78 @@
+Problem Description
+Given a sorted array of integers (not necessarily distinct) A and an integer B, find and return how many pair of integers ( A[i], A[j] ) such that i != j have sum equal to B.
+
+Since the number of such pairs can be very large, return number of such pairs modulo (109 + 7).
+
+
+
+Problem Constraints
+1 <= |A| <= 100000
+
+1 <= A[i] <= 10^9
+
+1 <= B <= 10^9
+
+Brute Force
+Checkeach pair.
+
+Better Approach: TC:O(N) SC:O(N)
+
+int Solution::solve(vector<int> &A, int B) {
+  int i,n=A.size();
+  map<int,int>maps;
+  map<int,int>::iterator it;
+
+  for(i=0;i<n;i++){
+    maps[A[i]]+=1;
+  }
+
+  long ans=0,mod=1e9+7;
+  int ele,count;
+
+  for(it=maps.begin();it!=maps.end();it++){
+      ele=it->first;
+      count=it->second;
+      if((B-ele)==ele){
+           ans=(ans+(1L*count*(count-1)/2)%mod)%mod;
+      }
+      else{
+          if(maps.find(B-ele)!=maps.end()){
+              ans=(ans+(1L*maps[ele]*maps[B-ele])%mod)%mod;
+          }
+      }
+      maps[ele]=0;
+    }
+  return ans;   
+}
+
+Best Approach: TC:O(N) SC:O(1)
+
+const int mod = (int)(1e9 + 7);
+int Solution::solve(vector < int > & A, int B) {
+    int n = A.size(), i = 0, j = n - 1;
+    long count = 0;
+    while (i < j) {
+        int sum = A[i] + A[j];
+        if (sum == B) {
+             if (A[i] != A[j]) {
+                int a = 1, b = 1;
+                // count number of elements with value A[i]
+                while (i + 1 < j && A[i] == A[i + 1]) i++, a++;
+                // count number of elements with value A[j]
+                while (j - 1 > i && A[j] == A[j - 1]) j--, b++;
+                count = (count + (a * 1l * b) % mod) % mod;
+                i++, j--;
+            } else { 
+                // equal A[i] and A[j]
+                int cnt = 1;
+                cnt = (j - i + 1);
+                cnt = (cnt * 1ll * (cnt - 1) / 2) % mod;
+                count = (cnt + count) % mod;
+                break;
+            }
+        } else if (sum > B)
+            j--;
+        else i++;
+    }
+    return count;
+}
