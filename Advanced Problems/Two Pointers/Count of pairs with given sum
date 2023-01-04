@@ -1,0 +1,21 @@
+Given a sorted array of distinct integers A and an integer B, find and return how many pair of integers ( A[i], A[j] ) such that i != j have sum equal to B.
+
+int Solution::solve(vector<int> &A, int B) {
+    long n=A.size();
+    long p1=0,p2=n-1,count=0,sum;
+    while(p1<p2){
+        sum=A[p1]+A[p2];
+        if(sum==B){
+            count+=1;
+            p1++;
+            p2--;
+        }
+        else if(sum>B){
+           p2--;
+        }
+        else{
+            p1++;
+        }
+    }
+    return count;
+}
