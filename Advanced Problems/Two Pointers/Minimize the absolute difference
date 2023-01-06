@@ -1,0 +1,37 @@
+Given three sorted arrays A, B and Cof not necessarily same sizes.
+
+Calculate the minimum absolute difference between the maximum and minimum number from the triplet a, b, c such that a, b, c belongs arrays A, B, C respectively. i.e. 
+minimize | max(a,b,c) - min(a,b,c) |.
+
+Brute Force
+Try all the possible triplets.
+O(N*M*K)
+
+Efficient
+Three pointers.
+Approach: We will try to reduce the difference by increasing the minimum pointer.This also works because we have got the minimum possible difference 
+for the elemnt which is minimum. and the difference willonly increase if we increase any other of the two pointers.
+
+TC:O(N+M+K)
+
+int Solution::solve(vector<int> &A, vector<int> &B, vector<int> &C) {
+    int p1=0,p2=0,p3=0,n=A.size(),m=B.size(),o=C.size(),min_diff=INT_MAX,diff,minn,maxx;
+    while(p1<n && p2<m && p3<o){
+        maxx=max(A[p1],max(B[p2],C[p3]));
+        minn=min(A[p1],min(B[p2],C[p3]));
+        diff=maxx-minn;
+        if(min_diff>diff){
+            min_diff=diff;
+        }
+        if(A[p1]==minn){
+            p1++;
+        }
+        else if(B[p2]==minn){
+            p2++;
+        }
+        else{
+            p3++;
+        }
+    }
+    return min_diff;
+}
