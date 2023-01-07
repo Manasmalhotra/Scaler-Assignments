@@ -1,0 +1,34 @@
+Problem Description
+
+Given a sorted array of distinct integers A and an integer B, find and return how many rectangles with distinct configurations can be created using elements of this array as length and breadth whose area is lesser than B.
+
+(Note that a rectangle of 2 x 3 is different from 3 x 2 if we take configuration into view)
+
+
+Approach: Two pointers approach
+1 2 3 4 5
+p1=0,p2=n-1
+B=5.
+5*1==5
+P2--;
+4*1<5
+(3-0+1)*2-1 [We do -1 here to avoid double counting of 1*1]  (p2-p1+1)*2 counts 4*1,3*1,2*1,1*1, multiply by 2 for opp config. But 1*1=1*1 no matter if we invert cnfig.
+Therefore we subtract 1.
+TC:O(N)
+
+int Solution::solve(vector<int> &A, int B) {
+    int i,n=A.size();
+    int p1=0,p2=n-1;
+    long area=0,count=0,mod=1e9+7;
+    while(p1<=p2){
+        area=1LL*A[p1]*A[p2];
+        if(area>=B){
+            p2--;
+        }
+        else{
+            count=(count+(p2-p1+1)*2-1)%mod;
+            p1++;
+        }
+    }
+    return count;
+}
