@@ -1,0 +1,60 @@
+Problem Description
+
+Given two sorted arrays of distinct integers, A and B, and an integer C, find and return the pair whose sum is closest to C and the pair has one element from each array.
+
+More formally, find A[i] and B[j] such that abs((A[i] + B[j]) - C) has minimum value.
+
+If there are multiple solutions find the one with minimum i and even if there are multiple values of j for the same i then return the one with minimum j.
+
+Return an array with two elements {A[i], B[j]}.
+
+
+
+Problem Constraints
+
+1 <= length of both the arrays <= 100000
+
+1 <= A[i], B[i] <= 109
+
+Brute Force:
+Try all the pairs.
+TC:O(N^2)
+
+Two Pointers.
+
+TC:O(N+M)
+vector<int> Solution::solve(vector<int> &A, vector<int> &B, int C) {
+    vector<int>result;
+    long n=A.size(),m=B.size();
+    long p1=0,p2=m-1,minn=INT_MAX,left,right;
+    long sum;
+
+    while(p1<n && p2>=0){
+        sum=A[p1]+B[p2];
+        if(minn>=abs(sum-C)){
+            if(minn==abs(sum-C)){
+                if(left==p1){
+                right=min(right,p2);
+                }
+            }
+            else{
+            minn=abs(sum-C);
+            left=p1;
+            right=p2;
+            }
+        }
+
+        if(sum>C){
+            p2--;
+        }
+        else if(sum<C){
+            p1++;
+        }
+        else{
+            p1++;
+        }
+    }
+    result.push_back(A[left]);
+    result.push_back(B[right]);
+    return result;
+}
