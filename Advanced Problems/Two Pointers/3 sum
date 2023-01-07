@@ -1,0 +1,36 @@
+Problem Description
+Given an array A of N integers, find three integers in A such that the sum is closest to a given number B. Return the sum of those three integers.
+
+Assume that there will only be one solution
+TC:O(NlogN+N^2)
+SC:O(1)
+
+int Solution::threeSumClosest(vector<int> &A, int B) {
+    int i,n=A.size(),left,right,minn=INT_MAX;
+    long sum=0,ans=0;
+    sort(A.begin(),A.end());
+
+    for(i=0;i<n;i++){
+        left=i+1;
+        right=n-1;
+        while(left<right){
+            sum=A[left]+A[right]+A[i];
+            if(sum==B){
+                return B;
+            }
+            else{
+                if(minn>abs(B-sum)){
+                    minn=abs(B-sum);
+                    ans=sum;
+                }
+                if(sum>B){
+                    right--;
+                }
+                else{
+                    left++;
+                }
+            }
+        }
+    }
+    return ans;
+}
