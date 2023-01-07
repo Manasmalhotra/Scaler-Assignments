@@ -1,0 +1,71 @@
+Problem Description
+Given an unsorted integer array A of size N.
+
+Find the length of the longest set of consecutive elements from array A.
+
+
+
+Problem Constraints
+1 <= N <= 106
+
+-106 <= A[i] <= 106
+
+
+
+Input Format
+First argument is an integer array A of size N.
+
+
+
+Output Format
+Return an integer denoting the length of the longest set of consecutive elements from the array A.
+
+TC:O(NlogN)
+
+int Solution::longestConsecutive(const vector<int> &A) {
+vector<int>B=A;
+sort(B.begin(),B.end());
+int i,n=B.size(),count=1,ans=1;
+for(i=1;i<n;i++){
+    if(B[i]==B[i-1]+1){
+        count++;
+    }
+    else if(B[i]==B[i-1]){ //Test Case 1 1 1 2 2 3 3 4 4 5 5
+        continue;
+    }
+    
+    else{
+        ans=max(ans,count);
+        count=1;
+    }
+}
+ans=max(ans,count);
+return ans;
+}
+
+Hashing-- Optimal
+TC:O(N) SC:O(N)
+Approach: Check if A[i]-1 does not exist then start from this number.
+As in example [1,2,3,4,5] if you will consider each element it will lead to O(N^2) complexity.
+But with the check it is O(N) as we travrse array not more than twice.
+
+int Solution::longestConsecutive(const vector<int> &A) {
+  int i,n=A.size(),ans=1,count=0,num;
+  unordered_set<int>maps;
+  for(i=0;i<n;i++){
+      maps.insert(A[i]);
+  }
+  for(i=0;i<n;i++){
+      if(maps.find(A[i]-1)==maps.end()){
+          num=A[i];
+          count=1;
+          while(maps.find(num+1)!=maps.end()){
+              num+=1;
+              count+=1;
+          }
+          ans=max(ans,count);
+      }
+  }
+  return ans;
+}
+
