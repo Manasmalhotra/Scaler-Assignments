@@ -1,0 +1,93 @@
+Problem Description
+Given an expression string A, examine whether the pairs and the orders of “{“,”}”, ”(“,”)”, ”[“,”]” are correct in A.
+
+Refer to the examples for more clarity.
+
+
+
+Problem Constraints
+1 <= |A| <= 100
+
+Approach: Push all the opening brackets and pop as you encounter closing bracket.
+
+O(N)
+int Solution::solve(string A) {
+    stack<char>s;
+    int i,n=A.length();
+    for(i=0;i<n;i++){
+        if(A[i]=='{'){
+            s.push(A[i]);
+        }
+        else if(A[i]=='['){
+            s.push(A[i]);
+        }
+        else if(A[i]=='('){
+            s.push(A[i]);
+        }
+        else if(A[i]=='}'){
+            if(!s.empty() && s.top()=='{'){
+                s.pop();
+            }
+            else{
+                return 0;
+            }
+        }
+        else if(A[i]==']'){
+            if(!s.empty() && s.top()=='['){
+                s.pop();
+            }
+            else{
+                return 0;
+            }
+        }
+        else if(A[i]==')'){
+            if(!s.empty() && s.top()=='('){
+                s.pop();
+            }
+            else{
+                return 0;
+            }
+        }
+        else{
+            return 0;
+        }
+    }
+    if(s.empty()){
+        return 1;
+    }
+    return 0;
+}
+
+Approach 2:Does not work beacuse of test cases like {(}).Here there is an unbalaned bracket between balaced ones and it disturbs the order.
+
+int Solution::solve(string A) {
+    int i,n=A.length(),open1=0,close1=0,open2=0,close2=0,open3=0,close3=0;
+    for(i=0;i<n;i++){
+        if(A[i]=='['){
+            open1++;
+        }
+        else if(A[i]=='{'){
+            open2++;
+        }
+        else if(A[i]=='('){
+            open3++;
+        }
+        else if(A[i]==']'){
+            close1++;
+        }
+        else if(A[i]=='}'){
+            close2++;
+        }
+        else{
+            close3++;
+        }
+
+        if(close1>open1 || close2>open2 || close3>open3){
+            return 0;
+        }
+    }
+    if(open1==close1 && open2==close2 && open3==close3){
+        return 1;
+    }
+    return 0;
+}
