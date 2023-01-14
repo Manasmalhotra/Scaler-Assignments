@@ -1,0 +1,57 @@
+stack<int>merge(stack<int>s1,stack<int>s2){
+    stack<int>s3;
+    while(!s1.empty() && !s2.empty()){
+        if(s1.top()<s2.top()){
+            s3.push(s1.top());
+            s1.pop();
+        }
+        else{
+            s3.push(s2.top());
+            s2.pop();
+        }
+    }
+    while(!s1.empty()){
+        s3.push(s1.top());
+        s1.pop();
+    }
+    while(!s2.empty()){
+        s3.push(s2.top());
+        s2.pop();
+    }
+
+    stack<int>s4;
+    while(!s3.empty()){
+        s4.push(s3.top());
+        s3.pop();
+    }
+    return s4;
+}
+
+stack<int>mergesort(stack<int>s){
+    if(s.size()<=1){
+        return s;
+    }
+    int i,mid=s.size()/2;
+    stack<int>s1;
+    for(i=0;i<mid;i++){
+       s1.push(s.top());
+       s.pop();
+    }
+    s=mergesort(s);
+    s1=mergesort(s1);
+    return merge(s,s1);
+}
+vector<int> Solution::solve(vector<int> &A) {
+  int i,n=A.size();
+  stack<int>s;
+  for(i=0;i<n;i++){
+      s.push(A[i]);
+  }
+  s=mergesort(s);
+  int k=0;
+  while(!s.empty()){
+      A[k++]=s.top();
+      s.pop();
+  }
+  return A;
+}
