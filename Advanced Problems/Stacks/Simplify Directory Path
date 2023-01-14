@@ -1,0 +1,82 @@
+Given a string A representing an absolute path for a file (Unix-style).
+
+Return the string A after simplifying the absolute path.
+
+Note:
+
+In Unix-style file system:
+
+A period '.' refers to the current directory.
+A double period '..' refers to the directory up a level.
+Any multiple consecutive slashes '//' are treated as a single slash '/'.
+In Simplified Absolute path:
+
+The path starts with a single slash '/'.
+Any two directories are separated by a single slash '/'.
+The path doesn't end with trailing slashes '/'.
+The path only contains the directories on the path from the root directory to the target file or directory (i.e., no period '.' or double period '..')
+Path will not have whitespace characters.
+
+Input Format
+
+The only argument given is string A.
+Output Format
+
+Return a string denoting the simplified absolute path for a file (Unix-style).
+
+
+void removes(string A,char a,vector<string>&result){
+    int i,n=A.length();
+    string res;
+    for(i=0;i<n;i++){
+        if(A[i]!='/'){
+           res+=A[i];
+        }
+        else if(res.length()>0){
+            result.push_back(res);
+            res.clear();
+        }
+    }
+    if(res.length()>0){
+        result.push_back(res);
+    }
+    //return result;
+}
+
+
+string Solution::simplifyPath(string A) {
+    stack<string>s;
+    vector<string>result;
+    removes(A,'/',result);
+    int i,n=result.size();
+    for(i=0;i<n;i++){
+        if(result[i]=="."){
+            continue;
+        }
+        else if(result[i]==".."){
+           if(!s.empty()){
+               s.pop();
+           } 
+        }
+        else{
+            s.push(result[i]);
+        }
+    }
+    stack<string>s2;
+    
+    while(!s.empty()){
+        s2.push(s.top());
+        s.pop();
+    }
+    string res="/";
+    while(s2.size()>1){
+        res+=s2.top();
+        s2.pop();
+        res+="/";
+    }
+    if(!s2.empty()){
+    res+=s2.top();
+    s2.pop();
+    }
+    return res;
+}
