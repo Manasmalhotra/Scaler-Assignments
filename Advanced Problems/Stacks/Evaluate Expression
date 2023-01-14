@@ -1,0 +1,75 @@
+Problem Description
+An arithmetic expression is given by a string array A of size N. Evaluate the value of an arithmetic expression in Reverse Polish Notation.
+
+Valid operators are +, -, *, /. Each string may be an integer or an operator.
+
+
+
+Problem Constraints
+1 <= N <= 105
+
+
+
+Input Format
+The only argument given is string array A.
+
+
+
+Output Format
+Return the value of arithmetic expression formed using reverse Polish Notation.
+
+
+
+Example Input
+Input 1:
+    A =   ["2", "1", "+", "3", "*"]
+Input 2:
+    A = ["4", "13", "5", "/", "+"]
+
+Output 1:
+    9
+Output 2:
+    6
+TC:O(N)
+
+
+int Solution::evalRPN(vector<string> &A) {
+   int i,n=A.size(),num1,num2;
+   stack<int>s;
+   for(i=0;i<n;i++){
+       if(A[i]=="+"){
+          num1=s.top();
+          s.pop();
+          num2=s.top();
+          s.pop();
+          s.push(num1+num2); 
+       }
+
+       else if(A[i]=="-"){
+           num1=s.top();
+           s.pop();
+           num2=s.top();
+           s.pop();
+           s.push(num2-num1);
+       }
+
+       else if(A[i]=="*"){
+           num1=s.top();
+           s.pop();
+           num2=s.top();
+           s.pop();
+           s.push(num1*num2);
+       }
+       else if(A[i]=="/"){
+           num1=s.top();
+           s.pop();
+           num2=s.top();
+           s.pop();
+           s.push(num2/num1);
+       }
+       else{
+           s.push(stoi(A[i]));
+       }
+   }
+   return s.top(); 
+}
