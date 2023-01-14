@@ -1,0 +1,60 @@
+Problem Description
+You are given a string A.
+
+An operation on the string is defined as follows:
+
+Remove the first occurrence of the same consecutive characters. eg for a string "abbcd", the first occurrence of same consecutive characters is "bb".
+
+Therefore the string after this operation will be "acd".
+
+Keep performing this operation on the string until there are no more occurrences of the same consecutive characters and return the final string.
+
+
+Problem Constraints
+1 <= |A| <= 100000
+
+
+Input Format
+First and only argument is string A.
+
+Output Format
+Return the final string.
+
+
+Approach: Observe normally how we can do the process. This gives intuition of copying the contents to a container and removing elements from it when you 
+encounter dulicates. Propertiy of the container to remove the latest character hints towards using stack.
+TC:O(N)
+SC:O(N)
+string Solution::solve(string A) {
+int i,n=A.length();
+stack<char>s;
+string res;
+for(i=0;i<n;i++){
+    if(!s.empty() && s.top()==A[i]){
+        s.pop();
+    }
+    else{
+        s.push(A[i]);
+    }
+}
+while(!s.empty()){
+    res+=s.top();
+    s.pop();
+}
+reverse(res.begin(),res.end());
+return res;
+}
+
+string Solution::solve(string A) {
+    int i,n=A.length();
+    string res;
+    for(i=0;i<n;i++){
+        if(i!=0 && res[res.length()-1]==A[i]){
+            res.pop_back();
+        }
+        else{
+            res+=A[i];
+        }
+    }
+    return res;
+}
