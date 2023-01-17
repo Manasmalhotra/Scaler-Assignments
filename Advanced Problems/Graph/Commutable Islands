@@ -1,0 +1,73 @@
+//This solution is not working because  wt=10
+                                        1--2
+                                   wt=9 |  | wt=5
+                                        ---3
+In this cyclic graph as you traverse 1 you mark 2-3 as visted. Thus 2-3 edge which has weight 5 is left not traversed.
+
+int Solution::solve(int A, vector<vector<int> > &B) {
+    int i,n=B.size(),cost=0;
+    vector<pair<int,int> >adj[A+1];
+    for(i=0;i<n;i++){
+        adj[B[i][0]].push_back({B[i][2],B[i][1]});
+        adj[B[i][1]].push_back({B[i][2],B[i][0]});
+    }
+    vector<int>vis(A+1,0);
+    priority_queue<pair<int,int>,vector<pair<int,int> >,greater<pair<int,int> > >pq;
+    pair<int,int>temp;
+    pq.push({0,B[0][0]});
+    vis[B[0][0]]=1;
+    while(!pq.empty()){
+        temp=pq.top();
+        pq.pop();
+        int node=temp.second;
+        int weight=temp.first;
+        cout<<node<<" "<<weight<<endl;
+        cost+=weight;
+        for(i=0;i<adj[node].size();i++){
+          if(vis[adj[node][i].second]==0){
+            pq.push(adj[node][i]);
+            vis[adj[node][i].second]=1;
+          }
+        }
+    }
+    return cost;
+}
+
+Problem Description
+There are A islands and there are M bridges connecting them. Each bridge has some cost attached to it.
+
+We need to find bridges with minimal cost such that all islands are connected.
+
+It is guaranteed that input data will contain at least one possible scenario in which all islands are connected with each other.
+
+int Solution::solve(int A, vector<vector<int> > &B) {
+    int i,n=B.size(),cost=0;
+    vector<pair<int,int> >adj[A+1];
+    for(i=0;i<n;i++){
+        adj[B[i][0]].push_back({B[i][2],B[i][1]});
+        adj[B[i][1]].push_back({B[i][2],B[i][0]});
+    }
+    vector<int>vis(A+1,0);
+    priority_queue<pair<int,int>,vector<pair<int,int> >,greater<pair<int,int> > >pq;
+    pair<int,int>temp;
+    pq.push({0,B[0][0]});
+    while(!pq.empty()){
+        temp=pq.top();
+        pq.pop();
+        int node=temp.second;
+        int weight=temp.first;
+        if(vis[node]==1){
+            continue;
+        }
+        vis[node]=1;
+        //cout<<node<<" "<<weight<<endl;
+        cost+=weight;
+        for(i=0;i<adj[node].size();i++){
+          if(vis[adj[node][i].second]==0){
+            pq.push(adj[node][i]);
+          }
+        }
+    }
+    return cost;
+}
+
