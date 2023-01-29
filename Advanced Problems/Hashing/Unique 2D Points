@@ -1,0 +1,14 @@
+Problem Description
+Given a 2D array A of integer points on a 2D plane. Find and return the number of unique points in the array.
+The ith point in the array is (A[i][0], A[i][1])
+
+
+int Solution::solve(vector<vector<int> > &A) {
+    int i,n=A.size();
+    unordered_set<string>maps;
+
+    for(i=0;i<n;i++){
+        maps.insert(to_string(A[i][0])+"-"+to_string(A[i][1]));
+    }
+    return maps.size();
+}
