@@ -48,10 +48,10 @@ int Solution::solve(vector<int> &A, vector<int> &B) {
            } 
         }
         for(it=maps.begin();it!=maps.end();it++){
-        ans=max(ans,same+it->second+1);
+        ans=max(ans,same+it->second);
         }
     }
 
     
-    return ans;
+    return ans+1;// Edge case: [[0,0]]
 }
