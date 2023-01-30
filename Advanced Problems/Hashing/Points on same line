@@ -1,0 +1,57 @@
+Problem Description
+Given two arrays of integers A and B describing a pair of (A[i], B[i]) coordinates in a 2D plane. A[i] describe x coordinates of the ith point in the 2D plane, whereas B[i] describes the y-coordinate of the ith point in the 2D plane.
+
+Find and return the maximum number of points that lie on the same line.
+
+
+
+Problem Constraints
+1 <= (length of the array A = length of array B) <= 1000
+
+-105 <= A[i], B[i] <= 105
+
+
+
+Input Format
+The first argument is an integer array A.
+The second argument is an integer array B.
+
+
+
+Output Format
+Return the maximum number of points which lie on the same line.
+
+Approach: For each point, consider all other points and maintain the frequency of the gradients for current point. Then choose the max frequency gradient
+as this reflects max number of points on a line(As gradient of points on a line with current point would be same).
+
+int Solution::solve(vector<int> &A, vector<int> &B) {
+    map<double,int>maps;
+    map<double,int>::iterator it;
+    int i,j,n=A.size(),same=0,ans=0;
+    double num,den;
+    for(i=0;i<n;i++){
+        map<double,int>maps;
+        same=0;
+        for(j=i+1;j<n;j++){
+           num=A[j]-A[i];
+           den=B[j]-B[i];
+           if(num==0 && den==0){
+               same++;
+               ans=max(ans,same);
+               continue;
+           }
+           if(den==0){
+              maps[INT_MAX]+=1;
+           }
+           else{
+               maps[num/den]+=1;
+           } 
+        }
+        for(it=maps.begin();it!=maps.end();it++){
+        ans=max(ans,same+it->second+1);
+        }
+    }
+
+    
+    return ans;
+}
