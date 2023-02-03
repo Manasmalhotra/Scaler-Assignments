@@ -1,0 +1,85 @@
+Problem Description
+
+Given two strings A and B. Check if B contains same characters as that of given string A and in the same order.
+
+
+Problem Constraints
+
+1: A and B contain only UPPERCASE Letters.
+2: No two consecutive characters are same in A.
+3: You can only use constant amount of extra memory.
+
+
+Input Format
+
+The first argument given is string A.
+The second argument given is string B.
+
+
+Output Format
+
+Return 1 if B contains same characters as that of given string A and in the same order else return 0.
+
+
+Example Input
+
+Input 1:
+    A = "HIRED" 
+    B = "HHHIIIRRRRREEEEEDDDDD"
+Input 2:
+
+    A = "HIRED"
+    B = "DDHHHHIIIIRRRRREEEEDDD"
+    
+Approach: First of all remember that irrespective of examples given with question it is not clear that B.length()>A.length() or vice-versa.
+So we insert all charcteras of A in a set and traverse B to check if those are present in A. We also increase A's counter if it is equal to B's character. 
+This counter makes sure we are following right sequence also.
+A:HIRED
+B:HHIRRRED
+So when first H matches, k increases to 1.
+When 2nd H is there it is found on the map but k does not increase.
+Then I matches and k increments.
+Likewise it will continue and k will reach till n as we traverse the last charcter of B. This indicates both the strings were traversed together and they can complete together.
+
+TC: O(N+M) SC:O(N) 
+int Solution::solve(const string A, const string B) {
+    int i,n=A.length(),m=B.length(),k=0;
+    set<char>maps;
+    for(i=0;i<n;i++){
+        maps.insert(A[i]);
+    }
+    
+    for(i=0;i<m;i++){
+        if(maps.find(B[i])==maps.end()){
+            return 0;
+        }
+        if(B[i]==A[k]){
+            k++;
+        }
+    }
+    if(k==n){
+        return 1;
+    }
+    return 0;
+}
+
+BeST Approach
+Just traverse A as it does not have any duplicate and B must be greater than equal to A to have 1 as answer as A is guranteed to not have any duplicates.
+TC:O(N+M) SC:O(1)
+int Solution::solve(const string A, const string B) {
+    int i,j=0,n=A.length(),m=B.length();
+
+    for(i=0;i<n;i++){
+        if(j>=m || A[i]!=B[j]){
+            return 0;
+        }
+        while(j<m && B[j]==A[i]){
+            j++;
+        }
+    }
+    
+    if(j<m){
+        return 0;
+    }
+    return 1;
+}
