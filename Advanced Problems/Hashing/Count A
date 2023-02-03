@@ -1,0 +1,36 @@
+Approach:
+Number of subarrays Calculation.
+How we calculate number of subarrays?
+We take each start point and thens ee number of end points for it.
+By these combinations below we understand that as the index goes on inceasing by 1 the number o end pts available also decrease.
+abc
+0: 0,1,2
+1: 1,2
+2: 2
+3+2+1=6
+
+Then in counting number of subarrays for 'a' we consider only those start and points which have a. This results in answer as count(a)*(count(a)+1)/2. 
+
+aaba
+Number of start points: 3
+0  0,1,2
+1  1,2
+2  2
+
+abaacaan
+0 0,2,3,5,6
+2 2,3,5,6
+3 3,5,6
+5 5,6
+6 6
+
+
+int Solution::solve(string A) {
+    int i=0,n=A.length(),count=0;
+    for(i=0;i<n;i++){
+        if(A[i]=='a'){
+            count+=1;
+        }
+    }
+    return (count*(count+1))/2;
+}
