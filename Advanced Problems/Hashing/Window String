@@ -1,0 +1,82 @@
+Problem Description
+Given a string A and a string B, find the window with minimum length in A, which will contain all the characters in B in linear time complexity.
+Note that when the count of a character c in B is x, then the count of c in the minimum window in A should be at least x.
+
+Note:
+
+If there is no such window in A that covers all characters in B, return the empty string.
+If there are multiple such windows, return the first occurring minimum window ( with minimum start index and length )
+
+
+Problem Constraints
+1 <= size(A), size(B) <= 106
+
+Example Input
+Input 1:
+
+ A = "ADOBECODEBANC"
+ B = "ABC"
+ 
+Example Output
+Output 1:
+
+ "BANC"
+ 
+ Approach: Applied Two Pointers+Hashing.
+ One pointer is i and tbe second is start.
+ As you get a valid string move start to make it invalid and get the answer.
+ 
+ string Solution::minWindow(string A, string B) {
+    int i,j,n=A.length(),m=B.length();
+    map<char,int>maps;
+    map<char,int>waps;
+    if(n<m){
+        return "";
+    }
+    for(i=0;i<m;i++){
+        maps[B[i]]+=1;
+    }
+    
+    map<char,int>::iterator it;
+    int start=0,astart=-1,aend=-1,ans=n+1;
+    string result;
+
+    for(i=0;i<n;i++){
+        waps[A[i]]+=1;
+        for(it=maps.begin();it!=maps.end();it++){
+             if(waps.find(it->first)==waps.end() || it->second>waps[it->first]){
+                break;
+             }
+        }
+        if(it==maps.end()){
+            //cout<<"ENTER"<<endl;
+            while(maps.find(A[start])==maps.end() || waps[A[start]]>maps[A[start]]){
+                //cout<<"ENTER1"<<endl;
+                waps[A[start]]-=1;
+                if(waps[A[start]]==0){
+                    waps.erase(A[start]);
+                }
+
+                start++;
+            }
+            if(ans>i-start+1){
+                //cout<<"ENTER2"<<endl;
+                ans=i-start+1;
+                astart=start;
+                aend=i;
+            }
+            waps[A[start]]-=1;
+            if(waps[A[start]]==0){
+                waps.erase(A[start]);
+            }
+            start++;
+        }
+    }
+    if(astart==-1){
+        return "";
+    }
+    for(i=astart;i<=aend;i++){
+        result+=A[i];
+    }
+    return result;
+}
