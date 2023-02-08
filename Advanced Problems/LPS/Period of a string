@@ -1,0 +1,29 @@
+Problem Description
+You are given a string A of length N consisting of lowercase alphabets. Find the period of the string.
+
+Period of the string is the minimum value of k (k >= 1), that satisfies A[i] = A[i % k] for all valid i.
+String= abcabcabc
+        000123456
+Ans=> n-lps[n-1] ==> period=9-6=3
+
+vector<int> lps(string res){
+    int i,n=res.length(),x;
+    vector<int>lps(n,0);
+    for(i=1;i<n;i++){
+        x=lps[i-1];
+        while(res[i]!=res[x]){
+            if(x==0){
+                x=-1;
+                break;
+            }
+            x=lps[x-1];
+        }
+        lps[i]=x+1;
+    }
+    return lps;
+}
+int Solution::solve(string A) {
+   int n=A.length();
+   vector<int>l=lps(A);
+   return n-l[n-1];
+}
