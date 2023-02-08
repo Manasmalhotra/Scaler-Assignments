@@ -3,6 +3,12 @@ Given two binary strings A and B, count how many cyclic shift of B when taken XO
 
 NOTE: If there is a string, S0, S1, ... Sn-1 , then it is a cyclic shift is of the form Sk, Sk+1, ... Sn-1, S0, S1, ... Sk-1 where k can be any integer from 0 to N-1.
 
+Approach: A:1001 B:0011 str=1001@00110011--> This will give us all the permutations of the given string.
+Cyclic Permuatation: 0011->1001->1100->0110->0011:Now here even if we get the same string it does not affect the answer.
+1001@00110011
+0001000112341
+if A==B  111@111111 But here if we get the same string after rotation then it will affect the answer. We should not let this happen beacuse it is already considered when we tagged tow original strings.
+         0120123333
 void lps(vector<int>&l,string A){
     int i,x,n=A.length();
     l[0]=0;
