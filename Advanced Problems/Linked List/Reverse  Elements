@@ -1,0 +1,38 @@
+Problem Description
+You are given a singly linked list having head node A. You have to reverse the linked list and return the head node of that reversed list.
+
+NOTE: You have to do it in-place and in one-pass.
+
+TC:O(N): As we are traversing the list
+
+Method 1
+ListNode* Solution::reverseList(ListNode* A) {
+    if(A==NULL || A->next==NULL){
+        return A;
+    }
+    ListNode*prev=NULL,*curr=A,*next;
+    while(curr!=NULL){
+    next=curr->next;
+    curr->next=prev;
+    prev=curr;
+    curr=next;
+   }
+   return prev;
+}
+
+#Method 2
+ListNode* Solution::reverseList(ListNode* A) {
+    if(A==NULL || A->next==NULL){
+        return A;
+    }
+
+    ListNode*t,*h=A,*rh=NULL;
+    while(h!=NULL){
+    t=h;
+    h=h->next;
+    t->next=rh;
+    rh=t;
+    }
+    return rh;
+}
+
