@@ -41,6 +41,8 @@ Input 2:
  *     ListNode(int x) : val(x), next(NULL) {}
  * };
  */
+ 
+Approach: Get the point before start of cycle, that is end point of cycle. Make its next =NULL to break cycle.
 ListNode* Solution::solve(ListNode* A) {
     if(A==NULL || A->next==NULL){
         return A;
