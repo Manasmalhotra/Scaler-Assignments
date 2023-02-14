@@ -1,0 +1,69 @@
+Problem Description
+Reverse a linked list A from position B to C.
+
+NOTE: Do it in-place and in one-pass.
+Problem Constraints
+1 <= |A| <= 106
+
+1 <= B <= C <= |A|
+
+
+
+Input Format
+The first argument contains a pointer to the head of the given linked list, A.
+
+The second arugment contains an integer, B.
+
+The third argument contains an integer C.
+
+
+
+Output Format
+Return a pointer to the head of the modified linked list.
+
+
+
+Example Input
+Input 1:
+
+ A = 1 -> 2 -> 3 -> 4 -> 5
+ B = 2
+ C = 4
+
+Input 2:
+
+ A = 1 -> 2 -> 3 -> 4 -> 5
+ B = 1
+ C = 5
+ListNode* Solution::reverseBetween(ListNode* A, int B, int C) {
+    int count1=1,count2=1;
+    if(A==NULL || A->next==NULL || B==C){
+        return A;
+    }
+    ListNode*h=A,*t=A,*prev=NULL;
+    while(h!=NULL && count1<B){// Get start point of the range
+        prev=h;
+        h=h->next;
+        count1++;
+    }
+    while(t!=NULL && count2<=C){ //Get the end of range.
+        t=t->next;
+        count2++;
+    }
+    ListNode*rh=NULL,*temp,*q=h;
+    while(q!=t){// Reversing nodes till the end of range.
+        temp=q;
+        q=q->next;
+        temp->next=rh;
+        rh=temp;
+    }
+    h->next=t;//Link the reversed part with the right half we any remains.
+
+    if(prev!=NULL){
+        prev->next=rh; //Link the reversed with left side if any unaffected element are on left. 
+        return A;      //If we have elements on left of range, head remains same.
+    }
+    else{
+        return rh; //If we are to reverse since starting then rh is new head.
+    }
+}
