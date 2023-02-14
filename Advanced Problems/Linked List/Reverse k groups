@@ -1,0 +1,48 @@
+Problem Description
+Given a singly linked list A and an integer B, reverse the nodes of the list B at a time and return the modified linked list.
+
+Problem Constraints
+1 <= |A| <= 103
+
+B always divides A
+
+
+
+Input Format
+The first argument of input contains a pointer to the head of the linked list.
+
+The second arugment of input contains the integer, B.
+
+
+
+Output Format
+Return a pointer to the head of the modified linked list.
+
+Approach: We apply reversing the first k nodes in a recursive way to get the answer to this problem
+For LL=1->2->3->4 and k=2.
+Now h=1;
+After logic executes for one time we get 2->1  rh=2,th=1,h=3.Now we repeat same process for h=3 and get 4->3. after this add 4 to th next and get 2->1->4->3
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+ListNode* Solution::reverseList(ListNode* A, int B) {
+    ListNode*rh=NULL,*t,*h=A,*th=A;
+    int c=B;
+    if(A==NULL || A->next==NULL || B<=1){
+        return A;
+    }
+    while(h!=NULL && c>0){
+         t=h;
+         h=h->next;
+         t->next=rh;
+         rh=t;
+         c-=1;
+    }
+    th->next=reverseList(h,B);
+    return rh;
+}
