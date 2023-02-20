@@ -1,0 +1,48 @@
+Problem Description
+Given a linked list of integers. Find and return the length of the longest palindrome list that exists in that linked list.
+
+A palindrome list is a list that reads the same backward and forward.
+
+Expected memory complexity : O(1)
+
+Approach: We will keepon reversing the list as we traverse so as to get palindrome. 
+2-->1-->1-->2 ==> 2   1-->1-->2  after this 2<--1 1-->2  
+2-->1-->1-->1-->2 ==> 2 1-->1-->1-->2 after this 2<--1 1-->1-->2
+
+int count(ListNode*back,ListNode*forward){
+    if(back ==NULL || forward==NULL){
+        return 0;
+    }
+    int l=0;
+    while(forward!=NULL && back!=NULL){
+        if(forward->val!=back->val){
+            return l;
+        }
+        l++;
+        forward=forward->next;
+        back=back->next;
+    }
+    return l;
+}
+
+int Solution::solve(ListNode* A) {
+    if(A==NULL){
+        return 0;
+    }
+    else if(A->next==NULL){
+        return 1;
+    }
+    else{
+        ListNode*curr=A,*prev=NULL,*next;
+        int ans=0;
+        while(curr!=NULL){
+            next=curr->next;
+            curr->next=prev;
+            ans=max(ans,2*count(prev,next)+1);
+            ans=max(ans,2*count(curr,next));
+            prev=curr;
+            curr=next;
+        }
+        return ans;
+    }
+}
