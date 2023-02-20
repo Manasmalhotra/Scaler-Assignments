@@ -1,0 +1,157 @@
+Clone a Linked List
+
+Problem Description
+Given a doubly linked list of integers with one pointer of each node pointing to the next node 
+(just like in a single link list) while the second pointer, however, can point to any node in the list and not just the previous node.
+
+You have to create a copy of this list and return the head pointer of the duplicated list.
+
+Problem Constraints
+1 <= length of the list <= 100000
+
+1 <= Value of node <= 100000
+
+Input Format
+The only argument given is head pointer of the doubly linked list.
+
+Output Format
+Return the head pointer of the duplicated list.
+
+Example Input
+Input 1:
+
+1 -> 2 -> 3 -> 4 -> 5
+random pointer of each node 
+1 -> 5 2 -> 4 3 -> 3 4 -> 2 5 -> 1
+Input 2:
+
+1 -> 2 -> 3 -> 4 -> 5
+random pointer of each node 
+1 -> 5 2 -> 4 3 -> 3 4 -> 2 5 -> 1
+
+
+Example Output
+Output 1:
+
+1 -> 2 -> 3 -> 4 -> 5
+random pointer of each node 
+1 -> 5 2 -> 4 3 -> 3 4 -> 2 5 -> 1
+Output 2:
+
+1 -> 2 -> 3 -> 4 -> 5
+random pointer of each node 
+1 -> 5 2 -> 4 3 -> 3 4 -> 2 5 -> 1
+
+
+Example Explanation
+Explanation 1:
+
+ Just clone the given list.
+Explanation 2:
+
+ Just clone the given list
+ 
+ 
+ Idea 1: TC: O(N): First clone the simple list without random pointers. Then smake a one to onemapping of each node of A with clone list. Then use this mapping for 
+         populating random pointer.
+ 
+/*
+struct ListNode { 
+    int val; 
+    ListNode *next,*random; 
+    ListNode(int x) { 
+        val = x; 
+        next = random = NULL; 
+    } 
+}; 
+*/
+ListNode* clonelist(ListNode *A) {
+if(A==NULL){
+    return A;
+}
+ListNode*temp=A->next,*head=A,*head1=new ListNode(A->val);
+ListNode*tail=head1;
+while(temp!=NULL){
+  tail->next=temp;
+  tail=tail->next;
+  temp=temp->next;   
+}
+map<ListNode*,ListNode*>maps;
+temp=head1;
+
+while(head!=NULL){
+    maps[head]=temp;   // Node to Node mapping of a1 b1, a2 b2, a3 b3. So if a1->random=a5 then b1->random=maps[a1->random] ==> b1->random=maps[a5]=b5
+    head=head->next;
+    temp=temp->next;
+}
+head=A;
+temp=head1;
+while(head!=NULL){
+    temp->random=maps[head->random]; //Using the mapping of A and clone to populate clone's random pointer.
+    head=head->next;
+    temp=temp->next;
+}
+return head1;
+}
+
+Best Approach: TC:O(1)
+
+Approach: Replicate main list first. Ex; 1->2->3->4->5
+Then attach this list to the original list. 1->1->2->2->3->3->4->4->5->5.
+Now copy the random pointer as original head's random pointer's next shall be the random pointer of the second list element.
+
+/*
+struct ListNode { 
+    int val; 
+    ListNode *next,*random; 
+    ListNode(int x) { 
+        val = x; 
+        next = random = NULL; 
+    } 
+}; 
+*/
+ListNode* clonelist(ListNode *A) {
+  if(A==NULL){
+      return A;
+  }
+  ListNode*temp=A->next,*head=new ListNode(A->val);
+  ListNode*tail=head;
+  while(temp!=NULL){
+      tail->next=new ListNode(temp->val);
+      temp=temp->next;
+      tail=tail->next;
+   }
+  ListNode*t1=A,*t2=head;
+  while(t1!=NULL){
+      temp=t2->next;
+      t2->next=t1->next;
+      t1->next=t2;
+      t1=t2->next;
+      t2=temp;
+  }
+  
+  t1=A;
+  t2=A->next;
+  while(t1!=NULL){
+     t2->random=t1->random->next;
+     t1=t2->next;
+     if(t1!=NULL){
+     t2=t1->next;
+     }
+  }
+  
+  t1=A;
+  t2=A->next;
+  ListNode*head1=t2;
+  while(t2!=NULL){
+      t1->next=t2->next;
+       t1=t1->next;
+       if(t1==NULL){
+           break;
+       }
+       t2->next=t1->next;
+       t2=t2->next;
+  }
+  return head1;
+}
+
