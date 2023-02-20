@@ -1,0 +1,75 @@
+Problem Description
+Given a linked list where every node represents a linked list and contains two pointers of its type:
+
+Pointer to next node in the main list (right pointer)
+Pointer to a linked list where this node is head (down pointer). All linked lists are sorted.
+You are asked to flatten the linked list into a single list. Use down pointer to link nodes of the flattened list. 
+The flattened linked list should also be sorted.
+
+Standard Merge Sort Problem
+
+/*
+struct ListNode {
+    int val;
+    ListNode *right,*down;
+    ListNode(int x) {
+        val = x;
+        right = down = NULL;
+    }
+};
+*/
+
+ListNode* merge(ListNode* A, ListNode* B) {
+    ListNode*h,*t,*h1=A,*h2=B;
+    if(h1==NULL){
+        return h2;
+    }
+    if(h2==NULL){
+        return h1;
+    }
+    if(h1->val<h2->val){
+        h=h1;
+        t=h;
+        h1=h1->down;
+    }
+    else{
+        h=h2;
+        t=h;
+        h2=h2->down;
+    }
+    while(h1!=NULL && h2!=NULL){
+        if(h1->val<h2->val){
+            t->down=h1;
+            t=t->down;
+            h1=h1->down;
+        }
+        else{
+            t->down=h2;
+            t=t->down;
+            h2=h2->down;
+        }
+    }
+    if(h2==NULL){
+       t->down=h1;
+    }
+    else{
+        t->down=h2;
+    }
+    return h;
+}
+
+ListNode* flatten (ListNode* root) {
+    if(root==NULL || root->right==NULL){
+        return root;
+    }
+    ListNode*slow=root,*fast=root,*temp=NULL;
+    while(fast->right!=NULL && fast->right->right!=NULL){
+        slow=slow->right;
+        fast=fast->right->right;
+    }
+    ListNode*h2=slow->right;
+    slow->right=NULL;
+    ListNode* temp1=flatten(root);
+    ListNode* temp2=flatten(h2);
+    return merge(temp1,temp2);
+}
