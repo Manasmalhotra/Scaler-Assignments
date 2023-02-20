@@ -1,0 +1,35 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+int Solution::lPalin(ListNode* A) {
+    if(A==NULL || A->next==NULL){//Check if list has only one or no element then head will be the same.
+        return 1;
+    }
+
+    ListNode*p=A,*q=A;
+    while(q!=NULL &&  q->next!=NULL){  //Get the middleof the list.
+        p=p->next;
+        q=q->next->next;
+    }
+    
+    ListNode*rh=NULL,*h=p,*t;
+    while(h!=NULL){  //Reverse the list by taking midpoint as the head.
+        t=h->next;
+        h->next=rh;
+        rh=h;
+        h=t;
+    }
+    while(rh!=NULL && A!=NULL){ //Compare the two halves generated.
+       if(rh->val!=A->val){
+           return 0;
+       }
+       rh=rh->next;
+       A=A->next;
+    }
+    return 1;
+}
