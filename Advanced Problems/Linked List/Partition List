@@ -1,0 +1,54 @@
+Problem Description
+Given a linked list A and a value B, partition it such that all nodes less than B come before nodes greater than or equal to B.
+
+You should preserve the original relative order of the nodes in each of the two partitions.
+
+Problem Constraints
+1 <= |A| <= 106
+
+1 <= A[i], B <= 109
+
+Input Format
+The first argument of input contains a pointer to the head to the given linked list.
+
+The second argument of input contains an integer, B.
+
+Output Format
+Return a pointer to the head of the modified linked list.
+
+Approach:Made two lists based on two conditions and linked them.
+
+ListNode* Solution::partition(ListNode* A, int B) {
+    if(A==NULL || A->next==NULL){
+        return A;
+    }
+    ListNode*h1=NULL,*h2=NULL,*t1=NULL,*t2=NULL,*temp=A;
+    while(temp!=NULL){
+        if(temp->val<B){
+            if(h1==NULL){
+               h1=new ListNode(temp->val);
+               t1=h1;
+            }
+            else{
+            t1->next=new ListNode(temp->val);
+            t1=t1->next;
+            }
+        }
+        else{
+            if(h2==NULL){
+                h2=new ListNode(temp->val);
+                t2=h2;
+            }
+            else{
+            t2->next=new ListNode(temp->val);
+            t2=t2->next;
+            }
+        }
+          temp=temp->next;
+    }
+    if(t1==NULL){
+        return h2;
+    }
+    t1->next=h2;
+    return h1;
+}
