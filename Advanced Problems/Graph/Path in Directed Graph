@@ -1,0 +1,69 @@
+Problem Description
+Given an directed graph having A nodes labelled from 1 to A containing M edges given by matrix B of size M x 2such that there is a edge directed from node
+
+B[i][0] to node B[i][1].
+
+Find whether a path exists from node 1 to node A.
+
+Return 1 if path exists else return 0.
+
+NOTE:
+
+There are no self-loops in the graph.
+There are no multiple edges between two nodes.
+The graph may or may not be connected.
+Nodes are numbered from 1 to A.
+Your solution will run on multiple test cases. If you are using global variables make sure to clear them.
+
+
+Problem Constraints
+2 <= A <= 105
+
+1 <= M <= min(200000,A*(A-1))
+
+1 <= B[i][0], B[i][1] <= A
+
+
+
+Input Format
+The first argument given is an integer A representing the number of nodes in the graph.
+
+The second argument given a matrix B of size M x 2 which represents the M edges such that there is a edge directed from node B[i][0] to node B[i][1].
+
+
+
+Output Format
+Return 1 if path exists between node 1 to node A else return 0.
+
+Approach: Simple BFS Traversal starting from 0. If vistedof A-1==true then we can reach A-1 from 0.
+TC:O(N+E)
+
+int bfs(vector<int>adj[],vector<int>&vis,int source,int dest){
+    queue<int>q;
+    vis[source]=1;
+    q.push(source);
+    int i,temp;
+    while(!q.empty()){
+        temp=q.front();
+        q.pop();
+        for(i=0;i<adj[temp].size();i++){
+            int v=adj[temp][i];
+            if(vis[v]==0){
+                vis[v]=1;
+                q.push(v);
+            }
+        }
+    }
+    return vis[dest];
+}
+
+int Solution::solve(int A, vector<vector<int> > &B) {
+    int i,n=B.size(),res=0;
+    vector<int>adj[A];
+    vector<int>vis(A,0);
+    for(i=0;i<n;i++){
+        adj[B[i][0]-1].push_back(B[i][1]-1);
+    }
+   
+    return bfs(adj,vis,0,A-1);
+}
