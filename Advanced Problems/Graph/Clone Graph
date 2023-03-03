@@ -1,0 +1,33 @@
+Problem Description
+Clone an undirected graph. Each node in the graph contains a label and a list of its neighbors.
+
+Note: The test cases are generated in the following format (use the following format to use See Expected Output option):
+First integer N is the number of nodes.
+Then, N intgers follow denoting the label (or hash) of the N nodes.
+Then, N2 integers following denoting the adjacency matrix of a graph, where Adj[i][j] = 1 denotes presence of an undirected edge between the ith and jth node, O otherwise.
+
+Time Complexity: Same as DFS.O(N+2E)=> every node is visted one time plus every edge is visited twice as 5-6 and 6-5 for example.
+/**
+ * Definition for undirected graph.
+ * struct UndirectedGraphNode {
+ *     int label;
+ *     vector<UndirectedGraphNode *> neighbors;
+ *     UndirectedGraphNode(int x) : label(x) {};
+ * };
+ */
+UndirectedGraphNode*solve(UndirectedGraphNode *node,map<UndirectedGraphNode*,UndirectedGraphNode*>&maps){
+    if(maps.find(node)!=maps.end()){
+       return maps[node];
+    }
+    UndirectedGraphNode*newnode=new UndirectedGraphNode(node->label);
+    maps[node]=newnode;
+    for(int i=0;i<node->neighbors.size();i++){
+        newnode->neighbors.push_back(solve(node->neighbors[i],maps));
+   }
+   return newnode;
+}
+
+UndirectedGraphNode *Solution::cloneGraph(UndirectedGraphNode *node) {
+   map<UndirectedGraphNode*,UndirectedGraphNode*>maps;
+   return solve(node,maps);
+}
