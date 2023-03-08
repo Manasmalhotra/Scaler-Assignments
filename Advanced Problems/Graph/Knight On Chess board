@@ -1,0 +1,84 @@
+Problem Description
+Given any source point, (C, D) and destination point, (E, F) on a chess board of size A x B, we need to find whether Knight can move to the destination or not.
+The above figure details the movements for a knight ( 8 possibilities ).
+
+If yes, then what would be the minimum number of steps for the knight to move to the said point. If knight can not move from the source point to the destination point, then return -1.
+
+NOTE: A knight cannot go out of the board.
+
+Code.
+Approach 1: Level wise bfs traversal.
+
+int Solution::knight(int A, int B, int C, int D, int E, int F) {
+    C-=1;
+    D-=1;
+    E-=1;
+    F-=1;
+    vector<vector<int> >vis(A,vector<int>(B,0));
+    vector<int>dirx={2,2,1,1,-1,-1,-2,-2};
+    vector<int>diry={1,-1,-2,2,2,-2,1,-1};
+    queue<pair<int,int> >q;
+    q.push({C,D});
+    vis[C][D]=1;
+    int dist=0,n;
+
+    while(!q.empty()){
+        n=q.size();
+        while(n--){
+        pair<int,int>temp=q.front();
+        q.pop();
+        int row=temp.first;
+        int col=temp.second;
+        if(row==E && col==F){
+            return dist;
+        }
+        for(int i=0;i<8;i++){
+            int newrow=row+dirx[i];
+            int newcol=col+diry[i];
+            if(newrow>=0 && newrow<A && newcol>=0 && newcol<B && vis[newrow][newcol]==0){
+                vis[newrow][newcol]=1;
+                q.push({newrow,newcol});
+            }
+        }
+      }
+      dist++;
+    }
+    return -1;
+}
+
+Approach 2: Simple bfs
+
+int Solution::knight(int A, int B, int C, int D, int E, int F) {
+    C-=1;
+    D-=1;
+    E-=1;
+    F-=1;
+    vector<vector<int> >vis(A,vector<int>(B,0));
+    vector<int>dirx={2,2,1,1,-1,-1,-2,-2};
+    vector<int>diry={1,-1,-2,2,2,-2,1,-1};
+    queue<pair<int,pair<int,int> > >q;
+    q.push({0,{C,D}});
+    vis[C][D]=1;
+    int n;
+
+    while(!q.empty()){
+        n=q.size();
+        pair<int,pair<int,int> >temp=q.front();
+        q.pop();
+        int dist=temp.first;
+        int row=temp.second.first;
+        int col=temp.second.second;
+        if(row==E && col==F){
+            return dist;
+        }
+        for(int i=0;i<8;i++){
+            int newrow=row+dirx[i];
+            int newcol=col+diry[i];
+            if(newrow>=0 && newrow<A && newcol>=0 && newcol<B && vis[newrow][newcol]==0){
+                vis[newrow][newcol]=1;
+                q.push({dist+1,{newrow,newcol}});
+            }
+        }
+    }
+    return -1;
+}
