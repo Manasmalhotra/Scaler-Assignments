@@ -1,0 +1,93 @@
+Problem Description
+There are A islands and there are M bridges connecting them. Each bridge has some cost attached to it.
+
+We need to find bridges with minimal cost such that all islands are connected.
+
+It is guaranteed that input data will contain at least one possible scenario in which all islands are connected with each other.
+
+Approach: 
+1) Sort the edges wrt increasing weights.
+2) Add the edge if it does not form a cycle in graph.E(Number of edges)*(N+E)==>(For cycle detction we need to count number of components and do N-C==E check or dfs method)
+
+We have optimised the cycle detection part here.
+By maintaining the root array(not parent array)
+We do not maintan a parent array as 
+1----4---5
+|
+2
+|
+3
+Here by parent array we can add edge 3--5 but when we see root we cannot add. Therefore we use root array.
+
+
+void merge(vector<vector<int> >&B,int low,int mid,int high){
+    int p1=low,p2=mid+1;
+    vector<vector<int> >temp;
+    while(p1<=mid && p2<=high){
+        if(B[p1][2]>B[p2][2]){
+            temp.push_back(B[p2]);
+            p2++;
+        }
+        else{
+            temp.push_back(B[p1]);
+            p1++;
+        }
+    }
+    while(p1<=mid){
+        temp.push_back(B[p1]);
+        p1++;
+    }
+    while(p2<=high){
+        temp.push_back(B[p2]);
+        p2++;
+    }
+    int k=0;
+    for(int i=low;i<=high;i++){
+        B[i][0]=temp[k][0];
+        B[i][1]=temp[k][1];
+        B[i][2]=temp[k][2];
+        k++;
+    }
+}
+void mergesort(vector<vector<int> >&B,int low,int high){
+    if(low>=high){
+        return;
+    }
+    int mid=(low+high)/2;
+    mergesort(B,low,mid);
+    mergesort(B,mid+1,high);
+    merge(B,low,mid,high);
+}
+int find(int node,vector<int>&parent){
+    if(node==parent[node]){
+        return node;
+    }
+    return parent[node]=find(parent[node],parent);
+}
+
+int Solution::solve(int A, vector<vector<int> > &B) {
+    int i,n=B.size(),cost=0;
+    vector<int>adj[A+1];
+    vector<int>parent(A+1,-1);
+
+    for(i=0;i<n;i++){
+       adj[B[i][0]].push_back(B[i][1]);
+       adj[B[i][1]].push_back(B[i][0]);
+    }
+
+    mergesort(B,0,n-1);
+    
+    for(i=0;i<=A;i++){
+        parent[i]=i;
+    }
+
+    for(i=0;i<n;i++){
+        int ra=find(B[i][0],parent);
+        int rb=find(B[i][1],parent);
+        if(ra!=rb){
+            cost+=B[i][2];
+            parent[max(ra,rb)]=min(ra,rb);
+        }
+    }
+    return cost;
+}
