@@ -1,0 +1,41 @@
+Problem Description
+Given a graph with A nodes and C weighted edges. Cost of constructing the graph is the sum of weights of all the edges in the graph.
+
+Find the minimum cost of constructing the graph by selecting some given edges such that we can reach every other node from the 1st node.
+
+NOTE: Return the answer modulo 109+7 as the answer can be large.
+
+Approach: Variation of minimu spanning tree: Prim's Algo
+int Solution::solve(int A, vector<vector<int> > &B) {
+int i,n=B.size(),cost=0,mod=1e9+7;
+    if(n==0){
+        return 0;
+    }
+    vector<pair<int,int> >adj[A+1];
+    for(i=0;i<n;i++){
+        adj[B[i][0]].push_back({B[i][2],B[i][1]});
+        adj[B[i][1]].push_back({B[i][2],B[i][0]});
+    }
+    vector<int>vis(A+1,0);
+    priority_queue<pair<int,int>,vector<pair<int,int> >,greater<pair<int,int> > >pq;
+    pair<int,int>temp;
+    pq.push({0,B[0][0]});
+    while(!pq.empty()){
+        temp=pq.top();
+        pq.pop();
+        int node=temp.second;
+        int weight=temp.first;
+        if(vis[node]==1){
+            continue;
+        }
+        vis[node]=1;
+        //cout<<node<<" "<<weight<<endl;
+        cost=(cost+weight)%mod;
+        for(i=0;i<adj[node].size();i++){
+          if(vis[adj[node][i].second]==0){
+            pq.push(adj[node][i]);
+          }
+        }
+    }
+    return cost;
+}
