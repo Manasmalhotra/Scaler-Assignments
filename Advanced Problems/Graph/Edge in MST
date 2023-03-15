@@ -1,0 +1,114 @@
+Approach: We can have edges with exact same weight also.
+So there can be two cases here:
+1)Either both of the edges with same weight can be included in the MST as their roots are different.
+2) Only one of the two edges could be added as adding both of them will form a cycle.
+So to consider all these things we first check if adding the edges of same weight does not lead to a cycle in the laready constructed min spanning tree, if not
+they can be considered as a edge, but we do not actually add them in the tree as this could affect the result for other edges of same weight.
+In the next for loop we again check this and this time we actually add the edge in the tree, so as to proceed with the checking of edges with different weights ahead.
+
+Problem Description
+
+Given a undirected weighted graph with A nodes labelled from 1 to A with M edges given in a form of 2D-matrix B of size M * 3 where B[i][0] and B[i][1] denotes the two nodes connected by an edge of weight B[i][2].
+
+For each edge check whether it belongs to any of the possible minimum spanning tree or not , return 1 if it belongs else return 0.
+
+Return an one-dimensional binary array of size M denoting answer for each edge.
+
+NOTE:
+
+The graph may be disconnected in that case consider mst for each component.
+No self-loops and no multiple edges present.
+Answers in output array must be in order with the input array B output[i] must denote the answer of edge B[i][0] to B[i][1].
+
+
+Problem Constraints
+
+1 <= A, M <= 3*105
+
+1 <= B[i][0], B[i][1] <= A
+
+1 <= B[i][1] <= 103
+
+
+
+Input Format
+
+The first argument given is an integer A representing the number of nodes in the graph.
+
+The second argument given is an matrix B of size M x 3 which represents the M edges such that there is a edge between node B[i][0] and node B[i][1] with weight B[i][2].
+
+
+
+Output Format
+
+Return an one-dimensional binary array of size M denoting answer for each edge.
+
+
+
+Example Input
+
+Input 1:
+
+ A = 3
+ B = [ [1, 2, 2]
+       [1, 3, 2]
+       [2, 3, 3]
+     ]
+
+
+Example Output
+
+Output 1:
+
+ [1, 1, 0]
+
+
+Example Explanation
+
+Explanation 1:
+
+ Edge (1, 2) with weight 2 is included in the MST           1
+                                                          /   \
+                                                         2     3
+ Edge (1, 3) with weight 2 is included in the same MST mentioned above.
+ Edge (2,3) with weight 3 cannot be included in any of the mst possible.
+ So we will return [1, 1, 0]
+ 
+bool cmp( vector<int> &a, vector<int>&b){
+    return a[2]<b[2];
+}
+int find_root( int node, vector<int>&is_connection){
+    if(is_connection[node]==node)    return node;
+    is_connection[node]=find_root(is_connection[node],is_connection);
+    return is_connection[node];
+}
+void connect_node(int parent, int child ,vector<int>&is_connection){
+    int root_p=find_root(parent,is_connection);
+    int root_c=find_root(child,is_connection);
+    if(root_c!=root_p){
+        is_connection[root_c]=root_p;
+    }
+}
+vector<int> Solution::solve(int a, vector<vector<int> > &b) {
+    vector<vector<int>>edge(b.size());
+    for(int i=0;i<b.size();i++){
+        edge[i]=b[i];
+        edge[i].push_back(i); // inserting original index
+    }
+    sort(edge.begin(),edge.end(),cmp);
+    vector<int> is_mst(b.size(),0);
+    vector<int>is_connection(a+1,0);
+    for( int i=1;i<=a;i++)  is_connection[i]=i;
+    for( int i=0;i<b.size();i++){
+        //why k looop
+        //For each edge to  check  it belongs to any of the possible minimum spanning tree this case occur when we have edges with ame weight
+        for( int k=i;k<b.size()&& (edge[i][2]==edge[k][2]);k++){
+            if(find_root(edge[k][0],is_connection)!=find_root(edge[k][1],is_connection))    //checking wether node are connected or not
+                is_mst[edge[k][3]]=1;
+        }
+        for( int k=i;k<b.size()&& (edge[i][2]==edge[k][2]);k++){
+            if(find_root(edge[k][0],is_connection)!=find_root(edge[k][1],is_connection))    //making union
+                connect_node(edge[k][0],edge[k][1],is_connection);
+        }
+    }return is_mst;
+}
