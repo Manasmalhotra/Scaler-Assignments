@@ -1,0 +1,54 @@
+Question: Topological Sort: Twist: Lexicographically sorted.
+By lexicographically sorted we mean that
+1->4->5
+      ^     10
+      |      |
+      |      v
+      7->8->9
+Even if 7 and 10 already have 0 indegree, we should print 4 after 1 as its indegree also becomes 0 as we process 1.
+Also edge ordering should not play a part here.
+Therefore we have used priority queue below so that in starting we will push all bodes with indegree==0 in pq and get min out of these then we will push all nodes whose 
+indegree==0 after processing min node and then again we will get the node with min value and push its neighbors and again get min value and so on.
+
+//Priority queue nullifies the effect of vertex order in graph array and the component order is eliminated
+//by taking all indegree=0 first.
+
+vector<int> Solution::solve(int A, vector<vector<int> > &B) {
+    int i,n=B.size();
+
+    vector<int>adj[A+1];
+    vector<int>indegree(A+1,0);
+    vector<int>result;
+    priority_queue<int,vector<int>,greater<int> >q;
+    vector<int>vis(A+1,0);
+
+    for(i=0;i<n;i++){
+        adj[B[i][0]].push_back(B[i][1]);
+        indegree[B[i][1]]++;
+    }
+    for(int j=1;j<=A;j++){
+        if(indegree[j]==0 && vis[j]==0){
+            q.push(j);
+            vis[j]=1;
+        }
+    }
+     while(!q.empty()){
+        int temp=q.top();
+        result.push_back(temp);
+        q.pop();
+        for(i=0;i<adj[temp].size();i++){
+            indegree[adj[temp][i]]--;
+            if(indegree[adj[temp][i]]==0){
+                q.push(adj[temp][i]);
+                vis[adj[temp][i]]=1;
+            }
+        }
+    }
+    
+    for(i=1;i<=A;i++){
+        if(vis[i]==0){
+            return {};
+        }
+    }
+    return result;
+}
