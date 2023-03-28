@@ -34,7 +34,9 @@ vector<int> Solution::solve(vector<int> &A, vector<int> &B, int C) {
         if(minn>=abs(sum-C)){
             if(minn==abs(sum-C)){
                 if(left==p1){
-                right=min(right,p2);
+                right=min(right,p2); //We need to write this to avoid cases like A : [ 1, 2, 3, 4, 5 ]
+                                                                               B : [ 2, 4, 6, 8 ]
+                                                                                C : 9. Here we have 1,8),(3,6) and (5,4) as pairs thus need to ensure min i then min j.
                 }
             }
             else{
@@ -51,7 +53,7 @@ vector<int> Solution::solve(vector<int> &A, vector<int> &B, int C) {
             p1++;
         }
         else{
-            p1++;
+            p2--;  //In order to check for a j less than the current one.
         }
     }
     result.push_back(A[left]);
