@@ -1,0 +1,36 @@
+Problem Description
+
+In Danceland, one person can party either alone or can pair up with another person.
+
+Can you find in how many ways they can party if there are A people in Danceland?
+
+Note: Return your answer modulo 10003, as the answer can be large.
+
+Approach:
+Either one person can party alone and we can arrange remaining A-1 people or we can pair up kth person with any person from [1,k-1] and then solve for A-2 people.
+
+Recursive
+
+int ways(int A){
+    if(A<=1){
+        return 1;
+    }
+    return (ways(A-1)+ (A-1)*ways(A-2))%10003;
+}
+int Solution::solve(int A) {
+    return ways(A);
+}
+
+Bottom up
+
+int Solution::solve(int A) {
+    vector<int>dp(A+1,0);
+    dp[0]=0;
+    dp[1]=1;
+    dp[2]=2;
+    long long mod=10003;
+    for(int i=3;i<=A;i++){
+        dp[i]=(dp[i-1]%mod+(1LL*(i-1)*dp[i-2])%mod)%mod;
+    }
+    return dp[A];  
+}
