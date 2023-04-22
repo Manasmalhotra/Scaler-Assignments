@@ -32,7 +32,6 @@ int ways(int A){
         return 1;
     }
     return (ways(A-1)%mod+ways(A-2)%mod)%mod;
-
 }
 
 int Solution::climbStairs(int A) {
@@ -71,4 +70,18 @@ int Solution::climbStairs(int A) {
         dp[i]=(dp[i-1]+dp[i-2])%mod;
     }
     return dp[A];
+}
+
+Space Optimised
+Since we depend only on last two sounds.
+
+int Solution::climbStairs(int A) {
+    int i,mod=1e9+7;
+    int a=1,b=1,c=1;
+    for(i=2;i<=A;i++){
+        c=(a+b)%mod;
+        a=b;
+        b=c;
+    }
+    return c;
 }
