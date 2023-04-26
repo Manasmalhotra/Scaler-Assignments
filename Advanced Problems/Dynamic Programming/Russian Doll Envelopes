@@ -1,0 +1,44 @@
+Simple vala approach. Just implemented LIS
+
+int Solution::solve(vector<vector<int> > &A) {
+    int i,j,n=A.size(),maxx=1;
+    sort(A.begin(),A.end());
+    vector<int>lis(n,1);
+    for(i=0;i<n;i++){
+        for(j=0;j<i;j++){
+            if(A[j][0]<A[i][0] && A[j][1]<A[i][1] && lis[i]<lis[j]+1){
+                lis[i]=lis[j]+1;
+                maxx=max(lis[i],maxx);
+            }
+        }
+    }
+    return maxx;
+}
+
+LIS in NlogN approach
+
+bool compare(vector<int>a,vector<int>b){
+    if(a[0]<b[0]){
+        return true;
+    }
+    if(a[0]==b[0]){
+        return a[1]>b[1];
+    }
+    return false;
+}
+
+int Solution::solve(vector<vector<int> > &A) {
+    sort(A.begin(),A.end(),compare);
+    int i,n=A.size();
+    vector<int>lis;
+    for(i=0;i<n;i++){
+       auto itr=lower_bound(lis.begin(),lis.end(),A[i][1]);
+       if(itr==lis.end()){
+           lis.push_back(A[i][1]);
+       }
+       else{
+           *itr=A[i][1];
+       }
+    }
+    return lis.size();
+}
