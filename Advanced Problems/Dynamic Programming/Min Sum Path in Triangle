@@ -1,0 +1,90 @@
+Problem Description
+Given a triangle, find the minimum path sum from top to bottom. Each step you may move to adjacent numbers on the row below.
+
+Adjacent numbers for jth column of ith row is jth and (j+1)th column of (i + 1)th row.
+
+Approach: Greedy cannot work here.
+As 
+2
+3,8
+101,-1,-2
+
+Here if you willcome by greedy you will choose 8 in second row and thus will not be able to choose 101 in third row.
+Hence greedy is not right approach and we need to traverse all the possible paths.
+Now we write recursion for traversing all the possible paths =>(i+1,j) and (i+1,j+1) while standing at i,j.
+Now notice :
+2
+3,4
+6,5,7
+4,1,8,3
+
+3 will call 5 and 5 will get its answer as 1+5=6. Now when this depth is covered, 4's call will run and it will also ask 5 for min value, then again calls will be made
+and answer as 6 will be returned. Thus overlapping subproblems.
+Threfore DP.
+
+int sum(vector<vector<int> >A,int i,int j,int n){
+    if(i>=n || j>=A[i].size()){
+        return 0;
+    }
+    int minn=INT_MAX;
+    for(j=0;j<A[i].size();j++){
+        minn=min(minn,A[i][j]+min(sum(A,i+1,j,n),sum(A,i+1,j+1,n)));
+    }
+    return minn;
+}
+
+int Solution::minimumTotal(vector<vector<int> > &A) {
+    // Do not write main() function.
+    // Do not read input, instead use the arguments to the function.
+    // Do not print the output, instead return values as specified
+    // Still have a doubt. Checkout www.interviewbit.com/pages/sample_codes/ for more details
+    int n=A.size();
+    return sum(A,0,0,n);
+}
+
+Memoization
+
+int sum(vector<vector<int> >&A,vector<vector<int> >&dp,int i,int j,int n){
+    if(i>=n || j>=A[i].size()){
+        return 0;
+    }
+    if(dp[i][j]==INT_MAX){
+       dp[i][j]=min(dp[i][j],A[i][j]+min(sum(A,dp,i+1,j,n),sum(A,dp,i+1,j+1,n)));
+    }
+    return dp[i][j];
+}
+
+int Solution::minimumTotal(vector<vector<int> > &A) {
+    // Do not write main() function.
+    // Do not read input, instead use the arguments to the function.
+    // Do not print the output, instead return values as specified
+    // Still have a doubt. Checkout www.interviewbit.com/pages/sample_codes/ for more details
+    int n=A.size();
+    int i,m=A[n-1].size();
+    vector<vector<int> >dp(n);
+    for(i=0;i<n;i++){
+        vector<int>res(A[i].size(),INT_MAX);
+        dp[i]=res;
+    }
+    return sum(A,dp,0,0,n);
+}
+
+Bottom Up
+
+int Solution::minimumTotal(vector<vector<int> > &A) {
+    // Do not write main() function.
+    // Do not read input, instead use the arguments to the function.
+    // Do not print the output, instead return values as specified
+    // Still have a doubt. Checkout www.interviewbit.com/pages/sample_codes/ for more details
+    int i,j,n=A.size();
+    vector<int>dp;
+    for(j=0;j<A[n-1].size();j++){
+        dp.push_back(A[n-1][j]);
+    }
+    for(i=n-2;i>=0;i--){
+       for(j=0;j<A[i].size();j++){
+           dp[j]=A[i][j]+min(dp[j],dp[j+1]);
+       }
+    }
+    return dp[0];
+}
