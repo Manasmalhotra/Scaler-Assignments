@@ -1,0 +1,25 @@
+#include<iostream>
+
+using namespace std;
+
+int main()  {
+   int n;
+   cin>>n;
+   int a=0,b=1,c;
+   if(n==0){
+       cout<<a<<endl;
+   }
+   else if(n==1){
+       cout<<b<<endl;
+   }
+   else{
+   n-=1;
+   while(n){
+       c=a+b;
+       a=b;
+       b=c;
+       n-=1;
+   }
+   cout<<c<<endl;
+   }
+}
