@@ -1,0 +1,137 @@
+Problem Description
+Implement wildcard pattern matching with support for ' ? ' and ' * ' for strings A and B.
+
+' ? ' : Matches any single character.
+' * ' : Matches any sequence of characters (including the empty sequence).
+The matching should cover the entire input string (not partial).
+
+Approach:
+Match the two strings character by characer.
+If characters match then simple call i-1,j-1.
+If pattern has a ? then also characters will match and i-1,j-1.
+If pattern has * then either ignore * and move to i,j-1. Else let this character match with * and i-1,j.
+If none of the above case, then characters mismatched hence return 0.
+
+Recursive+ Memoized
+int ways(string A,string B,int i,int j,vector<vector<int> >&dp){
+    if(i<0 && j<0){
+        return 1;
+    }
+    if(i<0){
+         for(int k=0;k<=j;k++){
+            if(B[k]!='*'){
+                return 0;
+            }
+        }
+        return 1;
+    }
+    if(j<0){
+       return 0;
+    }
+
+    if(dp[i][j]!=-1){
+        return dp[i][j];
+    }
+
+    if(A[i]==B[j] || B[j]=='?'){
+        return dp[i][j]=ways(A,B,i-1,j-1,dp);
+    }
+    if(B[j]=='*'){
+        return dp[i][j]=ways(A,B,i-1,j,dp) | ways(A,B,i,j-1,dp);
+    }
+    return dp[i][j]=0;
+}
+
+int Solution::isMatch(const string A, const string B) {
+int i,j,n=A.length(),m=B.length();
+vector<vector<int>>dp(n,vector<int>(m,-1));
+return ways(A,B,n-1,m-1,dp);
+}
+
+Tabulation:
+1) Base Case.
+2) observe changing variables.
+3) Copy recurrence.
+
+int Solution::isMatch(const string A, const string B) {
+int i,j,k,n=A.length(),m=B.length();
+vector<vector<int> >dp(n+1,vector<int>(m+1,0));
+dp[0][0]=1; //Both Strings empty
+for(i=1;i<=n;i++){
+    dp[i][0]=0;
+}
+for(j=1;j<=m;j++){
+    int flag=1;
+    for(k=1;k<=j;k++){
+        if(B[k-1]!='*'){
+            flag=0;
+            break;
+        }
+    }
+    dp[0][j]=flag;
+}
+
+for(i=1;i<=n;i++){
+    for(j=1;j<=m;j++){
+        if(A[i-1]==B[j-1] || B[j-1]=='?'){
+            dp[i][j]=dp[i-1][j-1];
+        }
+        else if(B[j-1]=='*'){
+            dp[i][j]=dp[i][j-1] | dp[i-1][j];
+        }
+        else{
+            dp[i][j]=0;
+        }
+    }
+}
+return dp[n][m];
+}
+
+Space Optimisation.
+
+
+#include <bits/stdc++.h>
+
+using namespace std;
+
+bool isAllStars(string & S1, int i) {
+
+  // S1 is taken in 1-based indexing
+  for (int j = 1; j <= i; j++) {
+    if (S1[j - 1] != '*')
+      return false;
+  }
+  return true;
+}
+
+int Solution::isMatch(const string A, const string B) {
+  string S1=B,S2=A;
+  int n = S1.size();
+  int m = S2.size();
+
+  vector < int > prev(m + 1, 0);
+  vector < int > cur(m + 1, 0);
+
+  prev[0] = 1; 
+  //Every row is pattern's index and every i here is text's index.
+  //This row indicates if pattern length is 0.
+  //Therefore if text length is also zero then 1 else all other indices=0.
+
+  for (int i = 1; i <= n; i++) {//iterate pattern length from 1 to n .
+    cur[0] = isAllStars(S1, i); // If text is empty then check if pattern has all *.
+    for (int j = 1; j <= m; j++) { //iterate text length from 1 to m
+
+      if (S1[i - 1] == S2[j - 1] || S1[i - 1] == '?')
+        cur[j] = prev[j - 1];
+
+      else {
+        if (S1[i - 1] == '*')
+          cur[j] = prev[j] || cur[j - 1];
+
+        else cur[j] = 0;
+      }
+    }
+    prev = cur;
+  }
+  return prev[m];
+}
