@@ -1,0 +1,42 @@
+Problem Description
+Given two sequences A and B, count number of unique ways in sequence A, to form a subsequence that is identical to the sequence B.
+
+Subsequence : A subsequence of a string is a new string which is formed from the original string by deleting some (can be none) of ]
+the characters without disturbing the relative positions of the remaining characters. (ie, "ACE" is a subsequence of "ABCDE" while 
+"AEC" is not).
+
+Approach: Cases to consider:
+1) The characters do not match. In this situation discard current character of A.
+2) If characters match. Then we can considder this as a match and move ahead. 
+But simply movng ahead prevents us from considering the case that neighbouring characters can also match the current charcter and hence can 
+form another required subsequence.
+
+
+int ways(string A,string B,int i,int j,vector<vector<int> >&dp){
+    if(i<0){
+      if(j<0){
+          return 1;
+      }
+      return 0;
+    }
+    if(j<0){
+        return 1;
+    }
+    if(dp[i][j]!=-1){
+        return dp[i][j];
+    }
+
+    if(A[i]==B[j]){
+        return dp[i][j]=ways(A,B,i-1,j-1,dp)+ways(A,B,i-1,j,dp);
+    }
+    else{
+        return dp[i][j]=ways(A,B,i-1,j,dp);
+    }
+}
+
+int Solution::numDistinct(string A, string B) {
+int i,n=A.length(),m=B.length();
+vector<vector<int> >dp(n,vector<int>(m,-1)); 
+return ways(A,B,n-1,m-1,dp);
+}
+
