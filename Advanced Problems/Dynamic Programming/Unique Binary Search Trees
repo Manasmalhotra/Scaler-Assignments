@@ -1,0 +1,19 @@
+For a number j, j-1 numbers willbe on left and n-j numbers will be on right.
+
+int ways(vector<int>&dp,int A){
+    if(A==0 || A==1){
+        return 1;
+    }
+    if(dp[A]!=-1){
+        return dp[A];
+    }
+    int i,ans=0;
+    for(i=0;i<A;i++){
+        ans+=ways(dp,i)*ways(dp,A-1-i);
+    }
+    return dp[A]=ans;
+}
+int Solution::numTrees(int A) {
+vector<int>dp(A+1,-1);
+return ways(dp,A);
+}
